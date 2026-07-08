@@ -63,7 +63,17 @@
     "saveError": "No se pudo guardar",
     "titlePlaceholder": "Nombra tu espacio",
     "untitled": "Mi espacio",
-    "notConfigured": "Guardar aún no está disponible"
+    "notConfigured": "Guardar aún no está disponible",
+    "environment": {
+      "title": "Mundo",
+      "time": "Hora del día",
+      "wind": "Viento",
+      "effects": "Vida",
+      "butterflies": "Mariposas",
+      "clouds": "Nubes",
+      "fireflies": "Luciérnagas",
+      "ground": "Suelo"
+    }
   },
   "common": {
     "loading": "Creciendo…"

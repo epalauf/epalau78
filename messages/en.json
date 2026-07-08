@@ -63,7 +63,17 @@
     "saveError": "Couldn't save",
     "titlePlaceholder": "Name your space",
     "untitled": "My space",
-    "notConfigured": "Saving isn't available yet"
+    "notConfigured": "Saving isn't available yet",
+    "environment": {
+      "title": "World",
+      "time": "Time of day",
+      "wind": "Wind",
+      "effects": "Life",
+      "butterflies": "Butterflies",
+      "clouds": "Clouds",
+      "fireflies": "Fireflies",
+      "ground": "Ground"
+    }
   },
   "common": {
     "loading": "Growing…"

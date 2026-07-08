@@ -2,12 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
-import { OrbitControls, Sky } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { useEditorStore } from "@/stores/editorStore";
 import { GROUND_RADIUS, type SceneObject } from "@/lib/scene";
 import AssetMesh from "@/components/three/nature/AssetMesh";
-import PuffClouds from "@/components/three/nature/PuffClouds";
-import Butterflies from "@/components/three/nature/Butterflies";
+import LivingEnvironment from "@/components/three/LivingEnvironment";
 
 function clampToGround(x: number, z: number): [number, number, number] {
   const r = Math.hypot(x, z);
@@ -155,7 +154,7 @@ export default function EditorScene() {
   const selectObject = useEditorStore((s) => s.selectObject);
   const setPlacingAsset = useEditorStore((s) => s.setPlacingAsset);
   const removeObject = useEditorStore((s) => s.removeObject);
-  const effects = useEditorStore((s) => s.environment.effects);
+  const environment = useEditorStore((s) => s.environment);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -187,13 +186,7 @@ export default function EditorScene() {
       className="!absolute inset-0"
       onPointerMissed={() => selectObject(null)}
     >
-      <fog attach="fog" args={["#dcebd2", 45, 130]} />
-      <Sky sunPosition={[6, 1.4, -8]} turbidity={6} rayleigh={1.6} />
-      <ambientLight intensity={0.75} color="#fff8e7" />
-      <directionalLight position={[6, 8, -4]} intensity={1.4} color="#ffe9b8" />
-
-      {effects.clouds && <PuffClouds count={4} />}
-      {effects.butterflies && <Butterflies count={5} areaRadius={10} />}
+      <LivingEnvironment environment={environment} />
 
       <Ground />
       <SceneObjects />
