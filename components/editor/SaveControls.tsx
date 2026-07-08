@@ -17,9 +17,11 @@ async function uploadThumbnail(
   const blob = await captureCanvasThumbnail();
   if (!blob) return null;
   const path = `${userId}/${creationId}.jpg`;
+  // Storage upsert trips RLS on this setup; replace by delete-then-upload
+  await supabase.storage.from("thumbnails").remove([path]);
   const { error } = await supabase.storage
     .from("thumbnails")
-    .upload(path, blob, { upsert: true, contentType: "image/jpeg" });
+    .upload(path, blob, { contentType: "image/jpeg" });
   if (error) return null;
   const { data } = supabase.storage.from("thumbnails").getPublicUrl(path);
   // Cache-bust so updated thumbnails show immediately
