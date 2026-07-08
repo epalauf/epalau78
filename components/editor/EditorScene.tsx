@@ -184,6 +184,7 @@ export default function EditorScene() {
     <Canvas
       camera={{ position: [10, 9, 15], fov: 45 }}
       dpr={[1, 1.75]}
+      performance={{ min: 0.5 }}
       gl={{ preserveDrawingBuffer: true }}
       className="!absolute inset-0"
       onPointerMissed={() => selectObject(null)}

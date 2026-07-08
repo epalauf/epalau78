@@ -182,6 +182,7 @@ export default function GalleryExperience({
       <Canvas
         camera={{ position: [0, 4, 14], fov: 45 }}
         dpr={[1, 1.75]}
+        performance={{ min: 0.5 }}
         className="!absolute inset-0"
         onPointerMissed={() => setFocusedId(null)}
       >

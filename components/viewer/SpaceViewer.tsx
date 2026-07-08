@@ -23,6 +23,7 @@ export default function SpaceViewer({
       <Canvas
         camera={{ position: [12, 8, 16], fov: 45 }}
         dpr={[1, 1.75]}
+        performance={{ min: 0.5 }}
         className="!absolute inset-0"
       >
         <LivingEnvironment environment={scene.environment} />
