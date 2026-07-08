@@ -22,7 +22,11 @@ export default async function SpacePage({
   const scene = parseSceneData(creation.scene_data);
   if (!scene) notFound();
 
-  const profile = creation.profiles as { username: string } | null;
+  // Without generated DB types, supabase-js types to-one joins as arrays
+  const profileRaw = creation.profiles as unknown;
+  const profile = (
+    Array.isArray(profileRaw) ? (profileRaw[0] ?? null) : profileRaw
+  ) as { username: string } | null;
 
   return (
     <SpaceViewer

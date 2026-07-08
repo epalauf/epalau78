@@ -26,14 +26,15 @@ function EditorObject({
   const selectObject = useEditorStore((s) => s.selectObject);
   const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
   const isSelected = useEditorStore((s) => s.selectedId === object.id);
-  // Disable camera controls synchronously on grab — the React `enabled` prop
-  // re-renders too late and OrbitControls would start orbiting mid-drag.
-  const controls = useThree(
-    (s) => s.controls as unknown as { enabled: boolean } | null,
-  );
+  const getThree = useThree((s) => s.get);
 
   function handlePointerDown(e: ThreeEvent<PointerEvent>) {
     e.stopPropagation();
+    // Disable camera controls synchronously on grab — the React `enabled` prop
+    // re-renders too late and OrbitControls would start orbiting mid-drag.
+    const controls = getThree().controls as unknown as {
+      enabled: boolean;
+    } | null;
     if (controls) controls.enabled = false;
     selectObject(object.id);
     setDraggingObject(true);
@@ -183,6 +184,7 @@ export default function EditorScene() {
     <Canvas
       camera={{ position: [10, 9, 15], fov: 45 }}
       dpr={[1, 1.75]}
+      gl={{ preserveDrawingBuffer: true }}
       className="!absolute inset-0"
       onPointerMissed={() => selectObject(null)}
     >

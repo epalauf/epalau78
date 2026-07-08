@@ -79,6 +79,26 @@
     "hint": "Click a picture to come closer",
     "back": "Step back"
   },
+  "explore": {
+    "title": "Explore spaces",
+    "subtitle": "Wander through worlds other people have grown.",
+    "emptyTitle": "No public spaces yet",
+    "emptyBody": "Be the first — grow a space and open it to everyone.",
+    "emptyCta": "Start creating"
+  },
+  "mySpaces": {
+    "title": "My spaces",
+    "subtitle": "Everything you've planted, saved in one place.",
+    "emptyTitle": "Nothing growing yet",
+    "emptyBody": "Your saved spaces will appear here.",
+    "emptyCta": "Plant your first space",
+    "edit": "Edit",
+    "rename": "Click to rename",
+    "public": "Public 🌍",
+    "private": "Private 🔒",
+    "delete": "Delete",
+    "confirmDelete": "Really delete?"
+  },
   "common": {
     "loading": "Growing…"
   }
