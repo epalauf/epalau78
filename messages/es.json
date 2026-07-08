@@ -75,6 +75,10 @@
       "ground": "Suelo"
     }
   },
+  "gallery": {
+    "hint": "Haz clic en una imagen para acercarte",
+    "back": "Alejarse"
+  },
   "common": {
     "loading": "Creciendo…"
   }

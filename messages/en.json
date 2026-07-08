@@ -75,6 +75,10 @@
       "ground": "Ground"
     }
   },
+  "gallery": {
+    "hint": "Click a picture to come closer",
+    "back": "Step back"
+  },
   "common": {
     "loading": "Growing…"
   }
