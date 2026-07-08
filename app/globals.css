@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  /* Natura palette — green-tinted daylight */
+  --color-mist: #ecf3e7;
+  --color-mist-deep: #dde9d5;
+  --color-fir: #1c2e1f;
+  --color-fir-soft: #35503a;
+  --color-moss: #3f7145;
+  --color-leaf: #6fa470;
+  --color-pollen: #e8b54a;
+  --color-pond: #7ab5c4;
+
+  --font-display: var(--font-bricolage), ui-serif, serif;
+  --font-body: var(--font-albert), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-mist);
+  color: var(--color-fir);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+/* Signature: "glass leaf" panel — frosted glass with organic, asymmetric corners */
+.glass-leaf {
+  background: rgb(255 255 255 / 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgb(255 255 255 / 0.65);
+  border-radius: 1.25rem 2.75rem 1.25rem 2.75rem;
+  box-shadow: 0 8px 32px rgb(28 46 31 / 0.08);
+}
+
+.glass-leaf-flip {
+  border-radius: 2.75rem 1.25rem 2.75rem 1.25rem;
+}
+
+/* Organic pill for buttons — slightly uneven, like a seed */
+.seed-pill {
+  border-radius: 1.4rem 1.7rem 1.4rem 1.7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

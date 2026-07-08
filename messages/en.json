@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "create": "Create",
+    "explore": "Explore",
+    "mySpaces": "My spaces",
+    "signIn": "Sign in",
+    "signUp": "Join",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "heroTitle": "Grow a world of your own",
+    "heroSubtitle": "Wander a living gallery, then plant, shape, and share your own 3D nature space — right in your browser.",
+    "ctaCreate": "Start creating",
+    "ctaGallery": "Visit the gallery",
+    "scrollHint": "Scroll to explore",
+    "sectionGalleryTitle": "A gallery that breathes",
+    "sectionGalleryBody": "Photographs drift among leaves and light. Move your cursor and the whole grove leans in to meet you.",
+    "sectionCreateTitle": "Plant your own space",
+    "sectionCreateBody": "Place trees, rocks, flowers and ponds. Set the wind, wake the butterflies, and let the sun cross your sky.",
+    "sectionShareTitle": "Keep it, share it",
+    "sectionShareBody": "Join Natura to save your spaces, return to them anytime, and open them to other wanderers."
+  },
+  "footer": {
+    "tagline": "A living corner of the internet.",
+    "credits": "3D assets by Kenney & Quaternius (CC0)"
+  },
+  "common": {
+    "loading": "Growing…"
+  }
+}
