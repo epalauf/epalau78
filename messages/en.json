@@ -26,6 +26,22 @@
     "tagline": "A living corner of the internet.",
     "credits": "3D assets by Kenney & Quaternius (CC0)"
   },
+  "auth": {
+    "signInTitle": "Welcome back",
+    "signInSubtitle": "Your spaces have kept growing while you were away.",
+    "signUpTitle": "Join Natura",
+    "signUpSubtitle": "Create an account to save your spaces and share them.",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "signInAction": "Sign in",
+    "signUpAction": "Create account",
+    "working": "One moment…",
+    "noAccount": "New here?",
+    "haveAccount": "Already have an account?",
+    "checkEmail": "Almost there — check your email to confirm your account.",
+    "notConfigured": "Accounts aren't available yet. Please try again later."
+  },
   "common": {
     "loading": "Growing…"
   }

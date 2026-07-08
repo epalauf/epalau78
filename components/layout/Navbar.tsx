@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { useUser } from "@/lib/supabase/useUser";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const links = [
@@ -13,6 +14,14 @@ const links = [
 export default function Navbar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, supabase } = useUser();
+
+  async function handleSignOut() {
+    await supabase?.auth.signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 px-4">
@@ -41,18 +50,41 @@ export default function Navbar() {
 
           <LanguageSwitcher />
 
-          <Link
-            href="/login"
-            className="seed-pill hidden px-3 py-1.5 text-sm font-medium text-fir-soft transition-colors hover:bg-mist-deep sm:block"
-          >
-            {t("signIn")}
-          </Link>
-          <Link
-            href="/register"
-            className="seed-pill bg-pollen px-3.5 py-1.5 text-sm font-semibold text-fir transition-transform hover:scale-105"
-          >
-            {t("signUp")}
-          </Link>
+          {user ? (
+            <>
+              <Link
+                href="/my-spaces"
+                className={`seed-pill px-3 py-1.5 text-sm font-medium transition-colors ${
+                  pathname.startsWith("/my-spaces")
+                    ? "bg-moss text-mist"
+                    : "text-fir-soft hover:bg-mist-deep"
+                }`}
+              >
+                {t("mySpaces")}
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="seed-pill px-3 py-1.5 text-sm font-medium text-fir-soft transition-colors hover:bg-mist-deep"
+              >
+                {t("signOut")}
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="seed-pill hidden px-3 py-1.5 text-sm font-medium text-fir-soft transition-colors hover:bg-mist-deep sm:block"
+              >
+                {t("signIn")}
+              </Link>
+              <Link
+                href="/register"
+                className="seed-pill bg-pollen px-3.5 py-1.5 text-sm font-semibold text-fir transition-transform hover:scale-105"
+              >
+                {t("signUp")}
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </header>
