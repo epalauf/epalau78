@@ -42,6 +42,29 @@
     "checkEmail": "Casi listo: revisa tu correo para confirmar tu cuenta.",
     "notConfigured": "Las cuentas aún no están disponibles. Inténtalo más tarde."
   },
+  "editor": {
+    "assets": {
+      "pine": "Pino",
+      "broadleaf": "Árbol frondoso",
+      "bush": "Arbusto",
+      "rock": "Roca",
+      "flower": "Flor",
+      "mushroom": "Seta",
+      "pond": "Estanque"
+    },
+    "plantHint": "Haz clic en el suelo para plantarlo. Esc para parar.",
+    "size": "Tamaño",
+    "rotation": "Rotación",
+    "color": "Color",
+    "delete": "Quitar",
+    "save": "Guardar espacio",
+    "saving": "Guardando…",
+    "saved": "Guardado ✓",
+    "saveError": "No se pudo guardar",
+    "titlePlaceholder": "Nombra tu espacio",
+    "untitled": "Mi espacio",
+    "notConfigured": "Guardar aún no está disponible"
+  },
   "common": {
     "loading": "Creciendo…"
   }

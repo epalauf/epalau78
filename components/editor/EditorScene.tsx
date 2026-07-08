@@ -1,0 +1,211 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
+import { OrbitControls, Sky } from "@react-three/drei";
+import { useEditorStore } from "@/stores/editorStore";
+import { GROUND_RADIUS, type SceneObject } from "@/lib/scene";
+import AssetMesh from "@/components/three/nature/AssetMesh";
+import PuffClouds from "@/components/three/nature/PuffClouds";
+import Butterflies from "@/components/three/nature/Butterflies";
+
+function clampToGround(x: number, z: number): [number, number, number] {
+  const r = Math.hypot(x, z);
+  const max = GROUND_RADIUS - 1;
+  if (r > max) {
+    const k = max / r;
+    return [x * k, 0, z * k];
+  }
+  return [x, 0, z];
+}
+
+function EditorObject({
+  object,
+  windStrength,
+  phase,
+}: Readonly<{ object: SceneObject; windStrength: number; phase: number }>) {
+  const selectObject = useEditorStore((s) => s.selectObject);
+  const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
+  const isSelected = useEditorStore((s) => s.selectedId === object.id);
+  // Disable camera controls synchronously on grab — the React `enabled` prop
+  // re-renders too late and OrbitControls would start orbiting mid-drag.
+  const controls = useThree(
+    (s) => s.controls as unknown as { enabled: boolean } | null,
+  );
+
+  function handlePointerDown(e: ThreeEvent<PointerEvent>) {
+    e.stopPropagation();
+    if (controls) controls.enabled = false;
+    selectObject(object.id);
+    setDraggingObject(true);
+  }
+
+  return (
+    <group position={object.position}>
+      <group
+        onPointerDown={handlePointerDown}
+        onPointerUp={() => setDraggingObject(false)}
+      >
+        <AssetMesh
+          asset={object.asset}
+          tint={object.tint}
+          rotationY={object.rotationY}
+          scale={object.scale}
+          windPhase={phase}
+          windStrength={windStrength}
+        />
+      </group>
+      {isSelected && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.03, 0]}>
+          <ringGeometry args={[object.scale * 0.9, object.scale * 1.05, 32]} />
+          <meshBasicMaterial color="#e8b54a" transparent opacity={0.9} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+function Ground() {
+  const groundColor = useEditorStore((s) => s.groundColor);
+  const placingAsset = useEditorStore((s) => s.placingAsset);
+  const placeObject = useEditorStore((s) => s.placeObject);
+  const selectObject = useEditorStore((s) => s.selectObject);
+  const isDraggingObject = useEditorStore((s) => s.isDraggingObject);
+  const selectedId = useEditorStore((s) => s.selectedId);
+  const updateObject = useEditorStore((s) => s.updateObject);
+  const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
+  const [hover, setHover] = useState<[number, number, number] | null>(null);
+
+  function handlePointerDown(e: ThreeEvent<PointerEvent>) {
+    if (placingAsset) {
+      e.stopPropagation();
+      placeObject(clampToGround(e.point.x, e.point.z));
+    } else {
+      selectObject(null);
+    }
+  }
+
+  function handlePointerMove(e: ThreeEvent<PointerEvent>) {
+    if (placingAsset) {
+      setHover(clampToGround(e.point.x, e.point.z));
+    } else if (isDraggingObject && selectedId) {
+      updateObject(selectedId, {
+        position: clampToGround(e.point.x, e.point.z),
+      });
+    }
+  }
+
+  return (
+    <>
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={() => setDraggingObject(false)}
+        onPointerLeave={() => setHover(null)}
+      >
+        <circleGeometry args={[GROUND_RADIUS, 48]} />
+        <meshStandardMaterial color={groundColor} />
+      </mesh>
+      {placingAsset && hover && <PlacementGhost position={hover} />}
+    </>
+  );
+}
+
+function PlacementGhost({
+  position,
+}: Readonly<{ position: [number, number, number] }>) {
+  const placingAsset = useEditorStore((s) => s.placingAsset);
+  if (!placingAsset) return null;
+  return (
+    <group position={position}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]}>
+        <circleGeometry args={[0.9, 24]} />
+        <meshBasicMaterial color="#e8b54a" transparent opacity={0.35} />
+      </mesh>
+    </group>
+  );
+}
+
+function SceneObjects() {
+  const objects = useEditorStore((s) => s.objects);
+  const windStrength = useEditorStore((s) => s.environment.windStrength);
+  const phases = useMemo(
+    () => new Map(objects.map((o, i) => [o.id, (i * 1.37) % (Math.PI * 2)])),
+    [objects],
+  );
+
+  return (
+    <>
+      {objects.map((o) => (
+        <EditorObject
+          key={o.id}
+          object={o}
+          windStrength={windStrength}
+          phase={phases.get(o.id) ?? 0}
+        />
+      ))}
+    </>
+  );
+}
+
+export default function EditorScene() {
+  const isDraggingObject = useEditorStore((s) => s.isDraggingObject);
+  const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
+  const selectObject = useEditorStore((s) => s.selectObject);
+  const setPlacingAsset = useEditorStore((s) => s.setPlacingAsset);
+  const removeObject = useEditorStore((s) => s.removeObject);
+  const effects = useEditorStore((s) => s.environment.effects);
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        selectObject(null);
+        setPlacingAsset(null);
+      } else if (e.key === "Delete" || e.key === "Backspace") {
+        const target = e.target as HTMLElement;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
+        const { selectedId } = useEditorStore.getState();
+        if (selectedId) removeObject(selectedId);
+      }
+    }
+    function onPointerUp() {
+      setDraggingObject(false);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("pointerup", onPointerUp);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, [selectObject, setPlacingAsset, removeObject, setDraggingObject]);
+
+  return (
+    <Canvas
+      camera={{ position: [10, 9, 15], fov: 45 }}
+      dpr={[1, 1.75]}
+      className="!absolute inset-0"
+      onPointerMissed={() => selectObject(null)}
+    >
+      <fog attach="fog" args={["#dcebd2", 45, 130]} />
+      <Sky sunPosition={[6, 1.4, -8]} turbidity={6} rayleigh={1.6} />
+      <ambientLight intensity={0.75} color="#fff8e7" />
+      <directionalLight position={[6, 8, -4]} intensity={1.4} color="#ffe9b8" />
+
+      {effects.clouds && <PuffClouds count={4} />}
+      {effects.butterflies && <Butterflies count={5} areaRadius={10} />}
+
+      <Ground />
+      <SceneObjects />
+
+      <OrbitControls
+        makeDefault
+        enabled={!isDraggingObject}
+        target={[0, 0.5, 0]}
+        maxPolarAngle={Math.PI / 2 - 0.08}
+        minDistance={4}
+        maxDistance={45}
+      />
+    </Canvas>
+  );
+}
