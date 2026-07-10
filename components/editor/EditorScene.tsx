@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useEditorStore } from "@/stores/editorStore";
-import { GROUND_RADIUS, type SceneObject } from "@/lib/scene";
+import { GROUND_RADIUS, snapFrameToWall, type SceneObject } from "@/lib/scene";
 import { hashSeed } from "@/lib/random";
 import { userImagePublicUrl } from "@/lib/images";
 import AssetMesh from "@/components/three/nature/AssetMesh";
@@ -59,6 +59,7 @@ function EditorObject({
           windStrength={windStrength}
           imageUrl={object.image ? userImagePublicUrl(object.image) : undefined}
           seed={hashSeed(object.id)}
+          mounted={object.mounted}
         />
       </group>
       {isSelected && (
@@ -95,9 +96,25 @@ function Ground() {
     if (placingAsset) {
       setHover(clampToGround(e.point.x, e.point.z));
     } else if (isDraggingObject && selectedId) {
-      updateObject(selectedId, {
-        position: clampToGround(e.point.x, e.point.z),
-      });
+      const { objects } = useEditorStore.getState();
+      const dragged = objects.find((o) => o.id === selectedId);
+      // Frames dragged near a wall snap flush onto it (and detach when pulled away)
+      const snap =
+        dragged?.asset === "frame"
+          ? snapFrameToWall(e.point.x, e.point.z, dragged.scale, objects, dragged.id)
+          : null;
+      if (snap) {
+        updateObject(selectedId, {
+          position: snap.position,
+          rotationY: snap.rotationY,
+          mounted: true,
+        });
+      } else {
+        updateObject(selectedId, {
+          position: clampToGround(e.point.x, e.point.z),
+          mounted: undefined,
+        });
+      }
     }
   }
 

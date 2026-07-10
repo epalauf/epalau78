@@ -100,6 +100,8 @@
     "tiltZ": "Tilt sideways",
     "color": "Color",
     "customColor": "Custom color",
+    "onWall": "Hangs on the wall",
+    "detach": "Take off the wall",
     "artTitle": "Artwork title",
     "artTitlePlaceholder": "Name this piece",
     "artNote": "About this piece",

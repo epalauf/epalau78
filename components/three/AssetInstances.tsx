@@ -60,6 +60,7 @@ export default function AssetInstances({
               windStrength={windStrength}
               imageUrl={o.image ? userImagePublicUrl(o.image) : undefined}
               seed={hashSeed(o.id)}
+              mounted={o.mounted}
             />
           </group>
         );

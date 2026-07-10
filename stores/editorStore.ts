@@ -4,6 +4,7 @@ import {
   DEFAULT_ENVIRONMENT,
   DEFAULT_GROUND_COLOR,
   createSceneData,
+  snapFrameToWall,
   type AssetId,
   type EnvironmentSettings,
   type SceneData,
@@ -69,18 +70,30 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     if (!asset) return;
     const defaults = ASSET_DEFAULTS[asset];
     const image = get().placingImage;
+    // Frames dropped next to a wall hang themselves on it
+    const snap =
+      asset === "frame"
+        ? snapFrameToWall(
+            position[0],
+            position[2],
+            defaults.scale,
+            get().objects,
+          )
+        : null;
     const object: SceneObject = {
       id: crypto.randomUUID(),
       asset,
-      position,
+      position: snap ? snap.position : position,
       // Pictures and walls should face where you're looking, not spin randomly
-      rotationY:
-        image || asset === "frame" || asset === "wall" || asset === "doorway"
+      rotationY: snap
+        ? snap.rotationY
+        : image || asset === "frame" || asset === "wall" || asset === "doorway"
           ? 0
           : Math.random() * Math.PI * 2,
       scale: defaults.scale,
       tint: defaults.tint,
       image: image ?? undefined,
+      mounted: snap ? true : undefined,
     };
     set({ objects: [...get().objects, object], selectedId: object.id });
   },

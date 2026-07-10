@@ -31,6 +31,8 @@ type AssetMeshProps = {
   imageUrl?: string;
   /** Stable per-object seed for procedural variety (facades, placeholder art) */
   seed?: number;
+  /** Frame hangs flush on a wall */
+  mounted?: boolean;
 };
 
 /** Renders the procedural mesh for a catalog asset, at the local origin. */
@@ -45,6 +47,7 @@ export default function AssetMesh({
   windStrength = 1,
   imageUrl,
   seed = 4242,
+  mounted = false,
 }: AssetMeshProps) {
   switch (asset) {
     case "pine":
@@ -130,6 +133,7 @@ export default function AssetMesh({
           imageUrl={imageUrl}
           seed={seed}
           phase={windPhase}
+          mounted={mounted}
         />
       );
     case "pedestal":

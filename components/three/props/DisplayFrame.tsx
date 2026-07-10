@@ -20,6 +20,8 @@ type DisplayFrameProps = {
   imageUrl?: string;
   seed?: number;
   phase?: number;
+  /** Hangs flush on a wall: no floating drift, no ground shadow */
+  mounted?: boolean;
 };
 
 /** Picture + frame sized to the image's real aspect ratio (no stretching). */
@@ -75,11 +77,12 @@ export default function DisplayFrame({
   imageUrl,
   seed = 4242,
   phase = 0,
+  mounted = false,
 }: DisplayFrameProps) {
   const frame = useRef<Group>(null);
 
   useFrame(({ clock }) => {
-    if (!frame.current) return;
+    if (!frame.current || mounted) return;
     const t = clock.elapsedTime;
     frame.current.position.y = 1.55 + Math.sin(t * 0.7 + phase) * 0.07;
     // Breathe around the user-chosen tilt instead of overwriting it
@@ -90,14 +93,16 @@ export default function DisplayFrame({
   return (
     <group position={position} rotation={[0, rotationY, 0]} scale={scale}>
       {/* Soft anchor shadow so the floating frame feels placed */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.015, 0]}>
-        <circleGeometry args={[0.55, 20]} />
-        <meshBasicMaterial color="#1c2e1f" transparent opacity={0.14} />
-      </mesh>
+      {!mounted && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.015, 0]}>
+          <circleGeometry args={[0.55, 20]} />
+          <meshBasicMaterial color="#1c2e1f" transparent opacity={0.14} />
+        </mesh>
+      )}
       <group
         ref={frame}
         position={[0, 1.55, 0]}
-        rotation={[rotationX, 0, rotationZ]}
+        rotation={mounted ? [0, 0, 0] : [rotationX, 0, rotationZ]}
       >
         <Suspense fallback={null}>
           <Picture imageUrl={imageUrl} seed={seed} tint={tint} />

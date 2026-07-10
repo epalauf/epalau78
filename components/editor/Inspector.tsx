@@ -37,22 +37,36 @@ export default function Inspector() {
         />
       </label>
 
-      <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
-        {t("rotation")}
-        <input
-          type="range"
-          min={0}
-          max={Math.PI * 2}
-          step={0.05}
-          value={object.rotationY}
-          onChange={(e) =>
-            updateObject(selectedId, { rotationY: Number(e.target.value) })
-          }
-          className="accent-moss"
-        />
-      </label>
+      {object.mounted && (
+        <div className="flex flex-col gap-1.5 text-xs text-fir-soft">
+          <span>🖼️ {t("onWall")}</span>
+          <button
+            onClick={() => updateObject(selectedId, { mounted: undefined })}
+            className="seed-pill self-start border border-mist-deep px-3 py-1.5 font-medium transition-colors hover:bg-mist-deep"
+          >
+            {t("detach")}
+          </button>
+        </div>
+      )}
 
-      {object.asset === "frame" && (
+      {!object.mounted && (
+        <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+          {t("rotation")}
+          <input
+            type="range"
+            min={0}
+            max={Math.PI * 2}
+            step={0.05}
+            value={object.rotationY}
+            onChange={(e) =>
+              updateObject(selectedId, { rotationY: Number(e.target.value) })
+            }
+            className="accent-moss"
+          />
+        </label>
+      )}
+
+      {object.asset === "frame" && !object.mounted && (
         <>
           <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
             {t("tiltX")}
