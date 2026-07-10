@@ -72,7 +72,9 @@
       "tripod": "Trípode",
       "frame": "Cuadro",
       "pedestal": "Escultura",
-      "easel": "Caballete"
+      "easel": "Caballete",
+      "wall": "Pared",
+      "doorway": "Puerta"
     },
     "themes": {
       "nature": "Naturaleza",
@@ -97,6 +99,10 @@
     "tiltX": "Inclinar arriba / abajo",
     "tiltZ": "Inclinar lateral",
     "color": "Color",
+    "artTitle": "Título de la obra",
+    "artTitlePlaceholder": "Nombra esta obra",
+    "artNote": "Sobre esta obra",
+    "artNotePlaceholder": "Su historia, técnica, año…",
     "delete": "Quitar",
     "save": "Guardar espacio",
     "saving": "Guardando…",
@@ -119,6 +125,14 @@
   "gallery": {
     "hint": "Haz clic en una imagen para acercarte",
     "back": "Alejarse"
+  },
+  "viewer": {
+    "walk": "Caminar",
+    "orbit": "Vista libre",
+    "walkHint": "Haz clic para mirar · WASD o flechas para caminar · Esc para soltar",
+    "interactHint": "Pulsa E para ver esta obra",
+    "closeFocus": "Alejarse",
+    "untitled": "Obra sin título"
   },
   "explore": {
     "title": "Explora espacios",

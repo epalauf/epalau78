@@ -27,6 +27,8 @@ const ASSET_ICONS: Record<AssetId, string> = {
   frame: "🖼️",
   pedestal: "🏛️",
   easel: "🎨",
+  wall: "🧱",
+  doorway: "🚪",
 };
 
 const THEMES: { id: AssetTheme; icon: string }[] = [

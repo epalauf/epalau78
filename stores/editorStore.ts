@@ -73,8 +73,11 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       id: crypto.randomUUID(),
       asset,
       position,
-      // Picture assets should face where you're looking, not spin randomly
-      rotationY: image || asset === "frame" ? 0 : Math.random() * Math.PI * 2,
+      // Pictures and walls should face where you're looking, not spin randomly
+      rotationY:
+        image || asset === "frame" || asset === "wall" || asset === "doorway"
+          ? 0
+          : Math.random() * Math.PI * 2,
       scale: defaults.scale,
       tint: defaults.tint,
       image: image ?? undefined,

@@ -13,6 +13,8 @@ export const ASSET_IDS = [
   "frame",
   "pedestal",
   "easel",
+  "wall",
+  "doorway",
 ] as const;
 
 export type AssetId = (typeof ASSET_IDS)[number];
@@ -22,8 +24,17 @@ export type AssetTheme = "nature" | "urban" | "art";
 /** Palette grouping; an asset may appear in several themes. */
 export const ASSET_THEMES: Record<AssetTheme, readonly AssetId[]> = {
   nature: ["pine", "broadleaf", "bush", "rock", "flower", "mushroom", "pond"],
-  urban: ["building", "streetlamp", "bench", "tripod", "frame", "rock"],
-  art: ["frame", "pedestal", "easel", "bench", "flower"],
+  urban: [
+    "building",
+    "streetlamp",
+    "bench",
+    "tripod",
+    "frame",
+    "rock",
+    "wall",
+    "doorway",
+  ],
+  art: ["wall", "doorway", "frame", "pedestal", "easel", "bench", "flower"],
 };
 
 /** Maps a profile user_type to its home palette theme. */
@@ -46,6 +57,10 @@ export type SceneObject = {
   tint: string;
   /** Storage path of a user image shown by picture assets (frame, easel) */
   image?: string;
+  /** Artwork title shown when a visitor focuses the piece */
+  title?: string;
+  /** Artwork story/description shown when a visitor focuses the piece */
+  description?: string;
 };
 
 export type EnvironmentSettings = {
@@ -75,6 +90,12 @@ export const DEFAULT_GROUND_COLOR = "#7cb56b";
 
 export const GROUND_RADIUS = 28;
 
+// Wall geometry shared by the meshes and the walk-mode collision
+export const WALL_WIDTH = 4;
+export const WALL_HEIGHT = 3;
+export const WALL_THICKNESS = 0.3;
+export const DOORWAY_OPENING = 1.6;
+
 /** Default tint per asset — also the palette preview color. */
 export const ASSET_DEFAULTS: Record<AssetId, { tint: string; scale: number }> =
   {
@@ -92,6 +113,8 @@ export const ASSET_DEFAULTS: Record<AssetId, { tint: string; scale: number }> =
     frame: { tint: "#f6f3ea", scale: 1 },
     pedestal: { tint: "#c9503e", scale: 1 },
     easel: { tint: "#8a6f4d", scale: 1 },
+    wall: { tint: "#ece7db", scale: 1 },
+    doorway: { tint: "#ece7db", scale: 1 },
   };
 
 export const TINT_SWATCHES = [
@@ -147,6 +170,11 @@ export function parseSceneData(raw: unknown): SceneData | null {
         image: typeof o.image === "string" ? o.image : undefined,
         rotationX: typeof o.rotationX === "number" ? o.rotationX : undefined,
         rotationZ: typeof o.rotationZ === "number" ? o.rotationZ : undefined,
+        title: typeof o.title === "string" ? o.title.slice(0, 120) : undefined,
+        description:
+          typeof o.description === "string"
+            ? o.description.slice(0, 600)
+            : undefined,
       })),
   };
 }

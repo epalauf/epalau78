@@ -15,6 +15,8 @@ import Tripod from "@/components/three/props/Tripod";
 import DisplayFrame from "@/components/three/props/DisplayFrame";
 import Pedestal from "@/components/three/props/Pedestal";
 import Easel from "@/components/three/props/Easel";
+import Wall from "@/components/three/props/Wall";
+import Doorway from "@/components/three/props/Doorway";
 
 type AssetMeshProps = {
   asset: AssetId;
@@ -132,6 +134,10 @@ export default function AssetMesh({
       );
     case "pedestal":
       return <Pedestal scale={scale} tint={tint} rotationY={rotationY} />;
+    case "wall":
+      return <Wall scale={scale} tint={tint} rotationY={rotationY} />;
+    case "doorway":
+      return <Doorway scale={scale} tint={tint} rotationY={rotationY} />;
     case "easel":
       return (
         <Easel

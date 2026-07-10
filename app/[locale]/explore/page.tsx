@@ -24,7 +24,10 @@ export default async function ExplorePage({
     const supabase = await createClient();
     const { data } = await supabase
       .from("creations")
-      .select("id, title, thumbnail_url, updated_at, profiles ( username )")
+      // The !creations_user_id_fkey hint disambiguates from profiles.hero_creation_id
+      .select(
+        "id, title, thumbnail_url, updated_at, profiles!creations_user_id_fkey ( username )",
+      )
       .eq("is_public", true)
       .order("updated_at", { ascending: false })
       .limit(60);

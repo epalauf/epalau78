@@ -84,6 +84,41 @@ export default function Inspector() {
         </>
       )}
 
+      {(object.asset === "frame" || object.asset === "easel") && (
+        <>
+          <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+            {t("artTitle")}
+            <input
+              type="text"
+              maxLength={120}
+              value={object.title ?? ""}
+              onChange={(e) =>
+                updateObject(selectedId, {
+                  title: e.target.value || undefined,
+                })
+              }
+              placeholder={t("artTitlePlaceholder")}
+              className="seed-pill border border-mist-deep bg-white/70 px-3 py-1.5 text-sm font-normal normal-case tracking-normal text-fir outline-none transition focus:border-moss focus:bg-white"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+            {t("artNote")}
+            <textarea
+              maxLength={600}
+              rows={3}
+              value={object.description ?? ""}
+              onChange={(e) =>
+                updateObject(selectedId, {
+                  description: e.target.value || undefined,
+                })
+              }
+              placeholder={t("artNotePlaceholder")}
+              className="rounded-2xl border border-mist-deep bg-white/70 px-3 py-2 text-sm font-normal normal-case tracking-normal text-fir outline-none transition focus:border-moss focus:bg-white"
+            />
+          </label>
+        </>
+      )}
+
       <div className="flex flex-col gap-1.5">
         <span className="text-xs font-semibold uppercase tracking-wide text-fir-soft">
           {t("color")}

@@ -13,7 +13,8 @@ export default async function SpacePage({
   const supabase = await createClient();
   const { data: creation } = await supabase
     .from("creations")
-    .select("id, title, scene_data, profiles ( username )")
+    // The !creations_user_id_fkey hint disambiguates from profiles.hero_creation_id
+    .select("id, title, scene_data, profiles!creations_user_id_fkey ( username )")
     .eq("id", id)
     .maybeSingle();
 

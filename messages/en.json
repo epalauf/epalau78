@@ -72,7 +72,9 @@
       "tripod": "Tripod",
       "frame": "Framed picture",
       "pedestal": "Sculpture",
-      "easel": "Easel"
+      "easel": "Easel",
+      "wall": "Wall",
+      "doorway": "Doorway"
     },
     "themes": {
       "nature": "Nature",
@@ -97,6 +99,10 @@
     "tiltX": "Tilt up / down",
     "tiltZ": "Tilt sideways",
     "color": "Color",
+    "artTitle": "Artwork title",
+    "artTitlePlaceholder": "Name this piece",
+    "artNote": "About this piece",
+    "artNotePlaceholder": "Its story, technique, year…",
     "delete": "Remove",
     "save": "Save space",
     "saving": "Saving…",
@@ -119,6 +125,14 @@
   "gallery": {
     "hint": "Click a picture to come closer",
     "back": "Step back"
+  },
+  "viewer": {
+    "walk": "Walk through",
+    "orbit": "Fly view",
+    "walkHint": "Click to look around · WASD or arrows to walk · Esc to release",
+    "interactHint": "Press E to view this piece",
+    "closeFocus": "Step back",
+    "untitled": "Untitled piece"
   },
   "explore": {
     "title": "Explore spaces",
