@@ -60,6 +60,8 @@ function EditorObject({
           imageUrl={object.image ? userImagePublicUrl(object.image) : undefined}
           seed={hashSeed(object.id)}
           mounted={object.mounted}
+          offsetX={object.offsetX}
+          offsetY={object.offsetY}
         />
       </group>
       {isSelected && (

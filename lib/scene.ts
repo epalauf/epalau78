@@ -63,6 +63,10 @@ export type SceneObject = {
   description?: string;
   /** True when a frame hangs flush on a wall (no floating, no ground shadow) */
   mounted?: boolean;
+  /** Sideways offset of the picture along its own axis (frame asset) */
+  offsetX?: number;
+  /** Vertical offset of the picture from its default hang height (frame asset) */
+  offsetY?: number;
 };
 
 export type EnvironmentSettings = {
@@ -253,6 +257,14 @@ export function parseSceneData(raw: unknown): SceneData | null {
             ? o.description.slice(0, 600)
             : undefined,
         mounted: o.mounted === true ? true : undefined,
+        offsetX:
+          typeof o.offsetX === "number"
+            ? Math.max(-3, Math.min(3, o.offsetX))
+            : undefined,
+        offsetY:
+          typeof o.offsetY === "number"
+            ? Math.max(-3, Math.min(3, o.offsetY))
+            : undefined,
       })),
   };
 }

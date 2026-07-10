@@ -22,6 +22,10 @@ type DisplayFrameProps = {
   phase?: number;
   /** Hangs flush on a wall: no floating drift, no ground shadow */
   mounted?: boolean;
+  /** Sideways offset of the picture (local units — slides along a wall) */
+  offsetX?: number;
+  /** Vertical offset from the default hang height (local units) */
+  offsetY?: number;
 };
 
 /** Picture + frame sized to the image's real aspect ratio (no stretching). */
@@ -78,13 +82,16 @@ export default function DisplayFrame({
   seed = 4242,
   phase = 0,
   mounted = false,
+  offsetX = 0,
+  offsetY = 0,
 }: DisplayFrameProps) {
   const frame = useRef<Group>(null);
+  const hangY = 1.55 + offsetY;
 
   useFrame(({ clock }) => {
     if (!frame.current || mounted) return;
     const t = clock.elapsedTime;
-    frame.current.position.y = 1.55 + Math.sin(t * 0.7 + phase) * 0.07;
+    frame.current.position.y = hangY + Math.sin(t * 0.7 + phase) * 0.07;
     // Breathe around the user-chosen tilt instead of overwriting it
     frame.current.rotation.x = rotationX + Math.sin(t * 0.45 + phase) * 0.02;
     frame.current.rotation.z = rotationZ;
@@ -101,7 +108,7 @@ export default function DisplayFrame({
       )}
       <group
         ref={frame}
-        position={[0, 1.55, 0]}
+        position={[offsetX, hangY, 0]}
         rotation={mounted ? [0, 0, 0] : [rotationX, 0, rotationZ]}
       >
         <Suspense fallback={null}>

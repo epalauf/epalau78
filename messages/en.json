@@ -102,6 +102,8 @@
     "customColor": "Custom color",
     "onWall": "Hangs on the wall",
     "detach": "Take off the wall",
+    "artHeight": "Height",
+    "artSlide": "Slide along the wall",
     "artTitle": "Artwork title",
     "artTitlePlaceholder": "Name this piece",
     "artNote": "About this piece",

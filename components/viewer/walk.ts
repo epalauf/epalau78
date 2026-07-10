@@ -104,8 +104,19 @@ export function resolveCollisions(
 
 /** Where the picture of an artwork object sits in world space. */
 export function artworkCenter(o: SceneObject): [number, number, number] {
-  const height = o.asset === "easel" ? 1.35 : 1.55;
-  return [o.position[0], o.position[1] + height * o.scale, o.position[2]];
+  if (o.asset === "easel") {
+    return [o.position[0], o.position[1] + 1.35 * o.scale, o.position[2]];
+  }
+  // Frames can shift their picture along the wall (offsetX) and in height
+  const ox = (o.offsetX ?? 0) * o.scale;
+  const oy = (1.55 + (o.offsetY ?? 0)) * o.scale;
+  const cos = Math.cos(o.rotationY);
+  const sin = Math.sin(o.rotationY);
+  return [
+    o.position[0] + ox * cos,
+    o.position[1] + oy,
+    o.position[2] - ox * sin,
+  ];
 }
 
 /** A camera pose facing an artwork straight on. */

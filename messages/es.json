@@ -102,6 +102,8 @@
     "customColor": "Color personalizado",
     "onWall": "Colgado en la pared",
     "detach": "Descolgar de la pared",
+    "artHeight": "Altura",
+    "artSlide": "Deslizar por la pared",
     "artTitle": "Título de la obra",
     "artTitlePlaceholder": "Nombra esta obra",
     "artNote": "Sobre esta obra",

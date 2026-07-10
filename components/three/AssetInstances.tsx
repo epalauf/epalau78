@@ -61,6 +61,8 @@ export default function AssetInstances({
               imageUrl={o.image ? userImagePublicUrl(o.image) : undefined}
               seed={hashSeed(o.id)}
               mounted={o.mounted}
+              offsetX={o.offsetX}
+              offsetY={o.offsetY}
             />
           </group>
         );

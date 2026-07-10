@@ -33,6 +33,9 @@ type AssetMeshProps = {
   seed?: number;
   /** Frame hangs flush on a wall */
   mounted?: boolean;
+  /** Picture offsets for the frame asset (local units) */
+  offsetX?: number;
+  offsetY?: number;
 };
 
 /** Renders the procedural mesh for a catalog asset, at the local origin. */
@@ -48,6 +51,8 @@ export default function AssetMesh({
   imageUrl,
   seed = 4242,
   mounted = false,
+  offsetX = 0,
+  offsetY = 0,
 }: AssetMeshProps) {
   switch (asset) {
     case "pine":
@@ -134,6 +139,8 @@ export default function AssetMesh({
           seed={seed}
           phase={windPhase}
           mounted={mounted}
+          offsetX={offsetX}
+          offsetY={offsetY}
         />
       );
     case "pedestal":

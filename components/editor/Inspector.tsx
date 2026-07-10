@@ -49,6 +49,40 @@ export default function Inspector() {
         </div>
       )}
 
+      {object.asset === "frame" && (
+        <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+          {t("artHeight")}
+          <input
+            type="range"
+            min={-1.2}
+            max={1.4}
+            step={0.05}
+            value={object.offsetY ?? 0}
+            onChange={(e) =>
+              updateObject(selectedId, { offsetY: Number(e.target.value) })
+            }
+            className="accent-moss"
+          />
+        </label>
+      )}
+
+      {object.asset === "frame" && object.mounted && (
+        <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+          {t("artSlide")}
+          <input
+            type="range"
+            min={-2}
+            max={2}
+            step={0.05}
+            value={object.offsetX ?? 0}
+            onChange={(e) =>
+              updateObject(selectedId, { offsetX: Number(e.target.value) })
+            }
+            className="accent-moss"
+          />
+        </label>
+      )}
+
       {!object.mounted && (
         <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
           {t("rotation")}
