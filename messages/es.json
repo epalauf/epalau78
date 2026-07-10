@@ -10,26 +10,36 @@
     "signOut": "Salir"
   },
   "home": {
-    "heroTitle": "Cultiva un mundo propio",
-    "heroSubtitle": "Recorre una galería viva y luego planta, da forma y comparte tu propio espacio natural en 3D, directo en tu navegador.",
+    "heroTitle": "Un mundo vivo. Tres caminos para entrar.",
+    "heroSubtitle": "Cultiva un espacio natural en 3D, expón tu arte entre los árboles o deja que tus fotografías floten en luz viva — directo en tu navegador.",
     "ctaCreate": "Empieza a crear",
     "ctaGallery": "Visita la galería",
     "scrollHint": "Desplázate para explorar",
+    "chapterNature": "Para amantes de la naturaleza",
+    "chapterPhoto": "Para fotógrafos",
+    "chapterArt": "Para artistas",
     "sectionGalleryTitle": "Una galería que respira",
-    "sectionGalleryBody": "Las fotografías flotan entre hojas y luz. Mueve el cursor y todo el bosque se inclina hacia ti.",
-    "sectionCreateTitle": "Planta tu propio espacio",
+    "sectionGalleryBody": "El arte y las fotografías flotan entre hojas y luz. Mueve el cursor y todo el bosque se inclina hacia ti.",
+    "sectionCreateTitle": "Da forma a tu propio espacio",
     "sectionCreateBody": "Coloca árboles, rocas, flores y estanques. Ajusta el viento, despierta a las mariposas y deja que el sol cruce tu cielo.",
     "sectionShareTitle": "Guárdalo, compártelo",
-    "sectionShareBody": "Únete a Natura para guardar tus espacios, volver a ellos cuando quieras y abrirlos a otros caminantes."
+    "sectionShareBody": "Únete a Natura78 para guardar tus espacios, volver a ellos cuando quieras y abrirlos a otros caminantes.",
+    "audiencesTitle": "Hecho para tres tipos de caminantes",
+    "audienceNatureTitle": "Amantes de la naturaleza",
+    "audienceNatureBody": "Planta bosques, ajusta el viento, despierta mariposas y luciérnagas: cultiva un mundo vivo en 3D que sea tuyo.",
+    "audienceArtTitle": "Artistas",
+    "audienceArtBody": "Expón tu obra en un espacio que se mueve: las piezas cuelgan en luz viva en lugar de paredes blancas.",
+    "audiencePhotoTitle": "Fotógrafos",
+    "audiencePhotoBody": "Tus fotografías flotan en marcos suspendidos entre los árboles, vistas como la luz quiso que se vieran."
   },
   "footer": {
-    "tagline": "Un rincón vivo de internet.",
+    "tagline": "Un rincón vivo de internet — para la naturaleza, el arte y la fotografía.",
     "credits": "Cada mundo aquí crece directamente en tu navegador"
   },
   "auth": {
     "signInTitle": "Bienvenido de nuevo",
     "signInSubtitle": "Tus espacios siguieron creciendo mientras no estabas.",
-    "signUpTitle": "Únete a Natura",
+    "signUpTitle": "Únete a Natura78",
     "signUpSubtitle": "Crea una cuenta para guardar tus espacios y compartirlos.",
     "username": "Nombre de usuario",
     "email": "Correo electrónico",
@@ -40,7 +50,11 @@
     "noAccount": "¿Primera vez aquí?",
     "haveAccount": "¿Ya tienes una cuenta?",
     "checkEmail": "Casi listo: revisa tu correo para confirmar tu cuenta.",
-    "notConfigured": "Las cuentas aún no están disponibles. Inténtalo más tarde."
+    "notConfigured": "Las cuentas aún no están disponibles. Inténtalo más tarde.",
+    "typeQuestion": "¿Qué te trae por aquí?",
+    "typeNature": "Amante de la naturaleza",
+    "typePhoto": "Fotógrafo",
+    "typeArt": "Artista"
   },
   "editor": {
     "assets": {
@@ -50,11 +64,37 @@
       "rock": "Roca",
       "flower": "Flor",
       "mushroom": "Seta",
-      "pond": "Estanque"
+      "pond": "Estanque",
+      "building": "Edificio",
+      "streetlamp": "Farola",
+      "bench": "Banco",
+      "tripod": "Trípode",
+      "frame": "Cuadro",
+      "pedestal": "Escultura",
+      "easel": "Caballete"
+    },
+    "themes": {
+      "nature": "Naturaleza",
+      "urban": "Urbano",
+      "art": "Arte"
+    },
+    "images": {
+      "title": "Mis imágenes",
+      "upload": "Subir imagen",
+      "uploading": "Subiendo…",
+      "empty": "Sube fotos u obras para colgarlas en tu espacio.",
+      "hint": "Elige una imagen y haz clic en el suelo para colgarla.",
+      "hang": "Colgar en tu espacio",
+      "delete": "Eliminar imagen",
+      "signInPrompt": "Inicia sesión para subir tus propias imágenes.",
+      "uploadError": "No se pudo subir esa imagen.",
+      "loadError": "No se pudieron cargar tus imágenes."
     },
     "plantHint": "Haz clic en el suelo para plantarlo. Esc para parar.",
     "size": "Tamaño",
     "rotation": "Rotación",
+    "tiltX": "Inclinar arriba / abajo",
+    "tiltZ": "Inclinar lateral",
     "color": "Color",
     "delete": "Quitar",
     "save": "Guardar espacio",
@@ -81,7 +121,7 @@
   },
   "explore": {
     "title": "Explora espacios",
-    "subtitle": "Pasea por mundos que otras personas han cultivado.",
+    "subtitle": "Pasea por mundos que otras personas han creado.",
     "emptyTitle": "Aún no hay espacios públicos",
     "emptyBody": "Sé el primero: cultiva un espacio y ábrelo a todos.",
     "emptyCta": "Empieza a crear"

@@ -5,6 +5,8 @@ import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useEditorStore } from "@/stores/editorStore";
 import { GROUND_RADIUS, type SceneObject } from "@/lib/scene";
+import { hashSeed } from "@/lib/random";
+import { userImagePublicUrl } from "@/lib/images";
 import AssetMesh from "@/components/three/nature/AssetMesh";
 import LivingEnvironment from "@/components/three/LivingEnvironment";
 
@@ -50,9 +52,13 @@ function EditorObject({
           asset={object.asset}
           tint={object.tint}
           rotationY={object.rotationY}
+          rotationX={object.rotationX}
+          rotationZ={object.rotationZ}
           scale={object.scale}
           windPhase={phase}
           windStrength={windStrength}
+          imageUrl={object.image ? userImagePublicUrl(object.image) : undefined}
+          seed={hashSeed(object.id)}
         />
       </group>
       {isSelected && (

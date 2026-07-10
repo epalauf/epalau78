@@ -19,9 +19,9 @@ const albert = Albert_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Natura — living 3D nature spaces",
+  title: "Natura78 — living 3D spaces for nature, art & photography",
   description:
-    "Wander a living 3D gallery and plant, shape, and share your own nature space in the browser.",
+    "Grow a 3D nature world, exhibit your art among the trees, or let your photographs drift in living light — right in the browser.",
 };
 
 export function generateStaticParams() {

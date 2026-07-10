@@ -16,7 +16,7 @@ export default function Inspector() {
   if (!selectedId || !object) return null;
 
   return (
-    <div className="glass-leaf glass-leaf-flip pointer-events-auto flex w-60 flex-col gap-4 px-5 py-5">
+    <div className="glass-leaf glass-leaf-flip pointer-events-auto flex max-h-full w-60 flex-col gap-4 overflow-y-auto px-5 py-5">
       <h3 className="font-display text-lg font-bold text-fir">
         {t(`assets.${object.asset}`)}
       </h3>
@@ -50,6 +50,39 @@ export default function Inspector() {
           className="accent-moss"
         />
       </label>
+
+      {object.asset === "frame" && (
+        <>
+          <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+            {t("tiltX")}
+            <input
+              type="range"
+              min={-Math.PI / 2}
+              max={Math.PI / 2}
+              step={0.02}
+              value={object.rotationX ?? 0}
+              onChange={(e) =>
+                updateObject(selectedId, { rotationX: Number(e.target.value) })
+              }
+              className="accent-moss"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+            {t("tiltZ")}
+            <input
+              type="range"
+              min={-Math.PI / 2}
+              max={Math.PI / 2}
+              step={0.02}
+              value={object.rotationZ ?? 0}
+              onChange={(e) =>
+                updateObject(selectedId, { rotationZ: Number(e.target.value) })
+              }
+              className="accent-moss"
+            />
+          </label>
+        </>
+      )}
 
       <div className="flex flex-col gap-1.5">
         <span className="text-xs font-semibold uppercase tracking-wide text-fir-soft">

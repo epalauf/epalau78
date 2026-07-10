@@ -3,12 +3,43 @@
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { useHeroStore } from "@/stores/heroStore";
+
+const CHAPTER_META = [
+  { icon: "🌿", key: "chapterNature" },
+  { icon: "📷", key: "chapterPhoto" },
+  { icon: "🎨", key: "chapterArt" },
+] as const;
 
 export default function HeroOverlay() {
   const t = useTranslations("home");
+  const chapter = useHeroStore((s) => s.chapter);
+  const setChapter = useHeroStore((s) => s.setChapter);
 
   return (
     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
+        className="pointer-events-auto mb-5 flex flex-wrap items-center justify-center gap-2"
+      >
+        {CHAPTER_META.map(({ icon, key }, i) => (
+          <button
+            key={key}
+            onClick={() => setChapter(i)}
+            aria-pressed={chapter === i}
+            className={`seed-pill px-4 py-1.5 text-sm font-medium transition-all ${
+              chapter === i
+                ? "bg-moss text-mist shadow-md"
+                : "glass-leaf text-fir-soft hover:-translate-y-0.5"
+            }`}
+          >
+            <span aria-hidden className="mr-1.5">{icon}</span>
+            {t(key)}
+          </button>
+        ))}
+      </motion.div>
       <motion.h1
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}

@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="mt-auto px-4 py-8 text-center text-sm text-fir-soft">
       <p className="font-display text-base">
-        Natura<span className="text-moss">.</span> — {t("tagline")}
+        Natura<span className="text-moss">78</span> — {t("tagline")}
       </p>
       <p className="mt-1 opacity-70">{t("credits")}</p>
     </footer>

@@ -30,7 +30,7 @@ export default function Navbar() {
           href="/"
           className="font-display text-xl font-bold tracking-tight text-fir"
         >
-          Natura<span className="text-moss">.</span>
+          Natura<span className="text-moss">78</span>
         </Link>
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2">

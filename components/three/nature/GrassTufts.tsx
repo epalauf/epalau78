@@ -10,6 +10,7 @@ type GrassTuftsProps = {
   radius?: number;
   seed?: number;
   windStrength?: number;
+  color?: string;
 };
 
 export default function GrassTufts({
@@ -17,6 +18,7 @@ export default function GrassTufts({
   radius = 24,
   seed = 7,
   windStrength = 1,
+  color = "#5c9861",
 }: GrassTuftsProps) {
   const mesh = useRef<InstancedMesh>(null);
   const dummy = useMemo(() => new Object3D(), []);
@@ -51,7 +53,7 @@ export default function GrassTufts({
   return (
     <instancedMesh ref={mesh} args={[undefined, undefined, count]}>
       <coneGeometry args={[0.05, 0.3, 4]} />
-      <meshStandardMaterial color="#5c9861" flatShading />
+      <meshStandardMaterial color={color} flatShading />
     </instancedMesh>
   );
 }

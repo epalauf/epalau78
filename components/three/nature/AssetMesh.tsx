@@ -8,14 +8,27 @@ import Rock from "./Rock";
 import Flower from "./Flower";
 import Mushroom from "./Mushroom";
 import Pond from "./Pond";
+import Building from "@/components/three/props/Building";
+import StreetLamp from "@/components/three/props/StreetLamp";
+import Bench from "@/components/three/props/Bench";
+import Tripod from "@/components/three/props/Tripod";
+import DisplayFrame from "@/components/three/props/DisplayFrame";
+import Pedestal from "@/components/three/props/Pedestal";
+import Easel from "@/components/three/props/Easel";
 
 type AssetMeshProps = {
   asset: AssetId;
   tint: string;
   rotationY?: number;
+  rotationX?: number;
+  rotationZ?: number;
   scale?: number;
   windPhase?: number;
   windStrength?: number;
+  /** Resolved public URL of a user image, for picture assets */
+  imageUrl?: string;
+  /** Stable per-object seed for procedural variety (facades, placeholder art) */
+  seed?: number;
 };
 
 /** Renders the procedural mesh for a catalog asset, at the local origin. */
@@ -23,9 +36,13 @@ export default function AssetMesh({
   asset,
   tint,
   rotationY = 0,
+  rotationX = 0,
+  rotationZ = 0,
   scale = 1,
   windPhase = 0,
   windStrength = 1,
+  imageUrl,
+  seed = 4242,
 }: AssetMeshProps) {
   switch (asset) {
     case "pine":
@@ -85,5 +102,45 @@ export default function AssetMesh({
       return <Mushroom scale={scale * 1.6} tint={tint} rotationY={rotationY} />;
     case "pond":
       return <Pond scale={scale} tint={tint} rotationY={rotationY} />;
+    case "building":
+      return (
+        <Building
+          scale={scale}
+          tint={tint}
+          rotationY={rotationY}
+          seed={seed}
+        />
+      );
+    case "streetlamp":
+      return <StreetLamp scale={scale} tint={tint} rotationY={rotationY} />;
+    case "bench":
+      return <Bench scale={scale} tint={tint} rotationY={rotationY} />;
+    case "tripod":
+      return <Tripod scale={scale} tint={tint} rotationY={rotationY} />;
+    case "frame":
+      return (
+        <DisplayFrame
+          scale={scale}
+          tint={tint}
+          rotationY={rotationY}
+          rotationX={rotationX}
+          rotationZ={rotationZ}
+          imageUrl={imageUrl}
+          seed={seed}
+          phase={windPhase}
+        />
+      );
+    case "pedestal":
+      return <Pedestal scale={scale} tint={tint} rotationY={rotationY} />;
+    case "easel":
+      return (
+        <Easel
+          scale={scale}
+          tint={tint}
+          rotationY={rotationY}
+          imageUrl={imageUrl}
+          seed={seed}
+        />
+      );
   }
 }

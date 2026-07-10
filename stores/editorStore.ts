@@ -14,6 +14,8 @@ type EditorState = {
   objects: SceneObject[];
   selectedId: string | null;
   placingAsset: AssetId | null;
+  /** Storage path of the user image attached to the next placed frame */
+  placingImage: string | null;
   environment: EnvironmentSettings;
   groundColor: string;
   isDraggingObject: boolean;
@@ -22,6 +24,8 @@ type EditorState = {
   title: string;
 
   setPlacingAsset: (asset: AssetId | null) => void;
+  /** Enter place-frame mode with a user image attached */
+  startPlacingImage: (path: string) => void;
   placeObject: (position: [number, number, number]) => void;
   selectObject: (id: string | null) => void;
   updateObject: (id: string, patch: Partial<Omit<SceneObject, "id">>) => void;
@@ -43,6 +47,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   objects: [],
   selectedId: null,
   placingAsset: null,
+  placingImage: null,
   environment: DEFAULT_ENVIRONMENT,
   groundColor: DEFAULT_GROUND_COLOR,
   isDraggingObject: false,
@@ -50,19 +55,29 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   title: "",
 
   setPlacingAsset: (asset) =>
-    set({ placingAsset: asset, selectedId: asset ? null : get().selectedId }),
+    set({
+      placingAsset: asset,
+      selectedId: asset ? null : get().selectedId,
+      placingImage: null,
+    }),
+
+  startPlacingImage: (path) =>
+    set({ placingAsset: "frame", placingImage: path, selectedId: null }),
 
   placeObject: (position) => {
     const asset = get().placingAsset;
     if (!asset) return;
     const defaults = ASSET_DEFAULTS[asset];
+    const image = get().placingImage;
     const object: SceneObject = {
       id: crypto.randomUUID(),
       asset,
       position,
-      rotationY: Math.random() * Math.PI * 2,
+      // Picture assets should face where you're looking, not spin randomly
+      rotationY: image || asset === "frame" ? 0 : Math.random() * Math.PI * 2,
       scale: defaults.scale,
       tint: defaults.tint,
+      image: image ?? undefined,
     };
     set({ objects: [...get().objects, object], selectedId: object.id });
   },
@@ -106,6 +121,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       groundColor: data.terrain.groundColor,
       selectedId: null,
       placingAsset: null,
+      placingImage: null,
       creationId,
       title,
     }),
@@ -115,6 +131,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       objects: [],
       selectedId: null,
       placingAsset: null,
+      placingImage: null,
       environment: DEFAULT_ENVIRONMENT,
       groundColor: DEFAULT_GROUND_COLOR,
       creationId: null,

@@ -11,6 +11,7 @@ import AssetPalette from "./AssetPalette";
 import Inspector from "./Inspector";
 import SaveControls from "./SaveControls";
 import EnvironmentPanel from "./EnvironmentPanel";
+import MyImagesPanel from "./MyImagesPanel";
 
 export default function Editor() {
   const searchParams = useSearchParams();
@@ -53,11 +54,16 @@ export default function Editor() {
       {/* UI overlay */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <div className="flex items-start justify-between px-4 pt-20">
-          <EnvironmentPanel />
+          <div className="flex flex-col items-start gap-2">
+            <EnvironmentPanel />
+            <MyImagesPanel />
+          </div>
           <SaveControls />
         </div>
-        <div className="flex flex-1 items-end justify-between gap-3 px-4 pb-4 sm:items-center">
+        <div className="flex flex-1 items-end justify-start gap-3 px-4 pb-4 sm:items-center">
           <AssetPalette />
+        </div>
+        <div className="absolute bottom-4 right-4 top-20 flex items-end sm:items-center">
           <Inspector />
         </div>
       </div>

@@ -10,26 +10,36 @@
     "signOut": "Sign out"
   },
   "home": {
-    "heroTitle": "Grow a world of your own",
-    "heroSubtitle": "Wander a living gallery, then plant, shape, and share your own 3D nature space — right in your browser.",
+    "heroTitle": "One living world. Three ways in.",
+    "heroSubtitle": "Grow a 3D nature space, exhibit your art among the trees, or let your photographs drift in living light — right in your browser.",
     "ctaCreate": "Start creating",
     "ctaGallery": "Visit the gallery",
     "scrollHint": "Scroll to explore",
+    "chapterNature": "For nature lovers",
+    "chapterPhoto": "For photographers",
+    "chapterArt": "For artists",
     "sectionGalleryTitle": "A gallery that breathes",
-    "sectionGalleryBody": "Photographs drift among leaves and light. Move your cursor and the whole grove leans in to meet you.",
-    "sectionCreateTitle": "Plant your own space",
+    "sectionGalleryBody": "Art and photographs drift among leaves and light. Move your cursor and the whole grove leans in to meet you.",
+    "sectionCreateTitle": "Shape your own space",
     "sectionCreateBody": "Place trees, rocks, flowers and ponds. Set the wind, wake the butterflies, and let the sun cross your sky.",
     "sectionShareTitle": "Keep it, share it",
-    "sectionShareBody": "Join Natura to save your spaces, return to them anytime, and open them to other wanderers."
+    "sectionShareBody": "Join Natura78 to save your spaces, return to them anytime, and open them to other wanderers.",
+    "audiencesTitle": "Made for three kinds of wanderers",
+    "audienceNatureTitle": "Nature lovers",
+    "audienceNatureBody": "Plant forests, set the wind, wake butterflies and fireflies — grow a living 3D world that's yours.",
+    "audienceArtTitle": "Artists",
+    "audienceArtBody": "Exhibit your work in a space that moves — pieces hang in living light instead of white walls.",
+    "audiencePhotoTitle": "Photographers",
+    "audiencePhotoBody": "Your photographs drift in floating frames among the trees, seen the way light meant them to be."
   },
   "footer": {
-    "tagline": "A living corner of the internet.",
+    "tagline": "A living corner of the internet — for nature, art and photography.",
     "credits": "Every world here is grown right in your browser"
   },
   "auth": {
     "signInTitle": "Welcome back",
     "signInSubtitle": "Your spaces have kept growing while you were away.",
-    "signUpTitle": "Join Natura",
+    "signUpTitle": "Join Natura78",
     "signUpSubtitle": "Create an account to save your spaces and share them.",
     "username": "Username",
     "email": "Email",
@@ -40,7 +50,11 @@
     "noAccount": "New here?",
     "haveAccount": "Already have an account?",
     "checkEmail": "Almost there — check your email to confirm your account.",
-    "notConfigured": "Accounts aren't available yet. Please try again later."
+    "notConfigured": "Accounts aren't available yet. Please try again later.",
+    "typeQuestion": "What brings you here?",
+    "typeNature": "Nature lover",
+    "typePhoto": "Photographer",
+    "typeArt": "Artist"
   },
   "editor": {
     "assets": {
@@ -50,11 +64,37 @@
       "rock": "Rock",
       "flower": "Flower",
       "mushroom": "Mushroom",
-      "pond": "Pond"
+      "pond": "Pond",
+      "building": "Building",
+      "streetlamp": "Streetlamp",
+      "bench": "Bench",
+      "tripod": "Tripod",
+      "frame": "Framed picture",
+      "pedestal": "Sculpture",
+      "easel": "Easel"
+    },
+    "themes": {
+      "nature": "Nature",
+      "urban": "Urban",
+      "art": "Art"
+    },
+    "images": {
+      "title": "My images",
+      "upload": "Upload image",
+      "uploading": "Uploading…",
+      "empty": "Upload photos or artwork to hang them in your space.",
+      "hint": "Click an image, then click the ground to hang it.",
+      "hang": "Hang in your space",
+      "delete": "Delete image",
+      "signInPrompt": "Sign in to upload your own images.",
+      "uploadError": "Couldn't upload that image.",
+      "loadError": "Couldn't load your images."
     },
     "plantHint": "Click the ground to plant it. Esc to stop.",
     "size": "Size",
     "rotation": "Rotation",
+    "tiltX": "Tilt up / down",
+    "tiltZ": "Tilt sideways",
     "color": "Color",
     "delete": "Remove",
     "save": "Save space",
@@ -81,7 +121,7 @@
   },
   "explore": {
     "title": "Explore spaces",
-    "subtitle": "Wander through worlds other people have grown.",
+    "subtitle": "Wander through worlds other people have made.",
     "emptyTitle": "No public spaces yet",
     "emptyBody": "Be the first — grow a space and open it to everyone.",
     "emptyCta": "Start creating"

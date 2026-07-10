@@ -6,17 +6,46 @@ export const ASSET_IDS = [
   "flower",
   "mushroom",
   "pond",
+  "building",
+  "streetlamp",
+  "bench",
+  "tripod",
+  "frame",
+  "pedestal",
+  "easel",
 ] as const;
 
 export type AssetId = (typeof ASSET_IDS)[number];
+
+export type AssetTheme = "nature" | "urban" | "art";
+
+/** Palette grouping; an asset may appear in several themes. */
+export const ASSET_THEMES: Record<AssetTheme, readonly AssetId[]> = {
+  nature: ["pine", "broadleaf", "bush", "rock", "flower", "mushroom", "pond"],
+  urban: ["building", "streetlamp", "bench", "tripod", "frame", "rock"],
+  art: ["frame", "pedestal", "easel", "bench", "flower"],
+};
+
+/** Maps a profile user_type to its home palette theme. */
+export const USER_TYPE_THEMES: Record<string, AssetTheme> = {
+  nature: "nature",
+  photo: "urban",
+  art: "art",
+};
 
 export type SceneObject = {
   id: string;
   asset: AssetId;
   position: [number, number, number];
   rotationY: number;
+  /** Tilt forward/back — currently used by picture assets */
+  rotationX?: number;
+  /** Tilt sideways — currently used by picture assets */
+  rotationZ?: number;
   scale: number;
   tint: string;
+  /** Storage path of a user image shown by picture assets (frame, easel) */
+  image?: string;
 };
 
 export type EnvironmentSettings = {
@@ -56,6 +85,13 @@ export const ASSET_DEFAULTS: Record<AssetId, { tint: string; scale: number }> =
     flower: { tint: "#f2f0e4", scale: 1 },
     mushroom: { tint: "#c9503e", scale: 1 },
     pond: { tint: "#7ab5c4", scale: 1 },
+    building: { tint: "#3a4252", scale: 1 },
+    streetlamp: { tint: "#33302c", scale: 1 },
+    bench: { tint: "#c9b48f", scale: 1 },
+    tripod: { tint: "#33302c", scale: 1 },
+    frame: { tint: "#f6f3ea", scale: 1 },
+    pedestal: { tint: "#c9503e", scale: 1 },
+    easel: { tint: "#8a6f4d", scale: 1 },
   };
 
 export const TINT_SWATCHES = [
@@ -97,13 +133,20 @@ export function parseSceneData(raw: unknown): SceneData | null {
       },
     },
     terrain: { groundColor: data.terrain?.groundColor ?? DEFAULT_GROUND_COLOR },
-    objects: data.objects.filter(
-      (o): o is SceneObject =>
-        Boolean(o) &&
-        typeof o.id === "string" &&
-        (ASSET_IDS as readonly string[]).includes(o.asset) &&
-        Array.isArray(o.position) &&
-        o.position.length === 3,
-    ),
+    objects: data.objects
+      .filter(
+        (o): o is SceneObject =>
+          Boolean(o) &&
+          typeof o.id === "string" &&
+          (ASSET_IDS as readonly string[]).includes(o.asset) &&
+          Array.isArray(o.position) &&
+          o.position.length === 3,
+      )
+      .map((o) => ({
+        ...o,
+        image: typeof o.image === "string" ? o.image : undefined,
+        rotationX: typeof o.rotationX === "number" ? o.rotationX : undefined,
+        rotationZ: typeof o.rotationZ === "number" ? o.rotationZ : undefined,
+      })),
   };
 }

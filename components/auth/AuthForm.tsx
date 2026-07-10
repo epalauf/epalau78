@@ -11,12 +11,21 @@ type AuthFormProps = {
   mode: "login" | "register";
 };
 
+type UserType = "nature" | "photo" | "art";
+
+const USER_TYPES: { id: UserType; icon: string; key: string }[] = [
+  { id: "nature", icon: "🌿", key: "typeNature" },
+  { id: "photo", icon: "📷", key: "typePhoto" },
+  { id: "art", icon: "🎨", key: "typeArt" },
+];
+
 export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
   const t = useTranslations("auth");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [userType, setUserType] = useState<UserType>("nature");
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -36,7 +45,7 @@ export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { username } },
+        options: { data: { username, user_type: userType } },
       });
       setBusy(false);
       if (error) {
@@ -81,6 +90,31 @@ export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
+          {mode === "register" && (
+            <fieldset className="flex flex-col gap-1.5 text-sm font-medium text-fir-soft">
+              <legend className="mb-1.5">{t("typeQuestion")}</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {USER_TYPES.map(({ id, icon, key }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => setUserType(id)}
+                    aria-pressed={userType === id}
+                    className={`seed-pill flex flex-col items-center gap-1 border px-2 py-3 text-xs font-medium transition-colors ${
+                      userType === id
+                        ? "border-moss bg-moss/10 text-fir"
+                        : "border-mist-deep text-fir-soft hover:bg-mist-deep"
+                    }`}
+                  >
+                    <span aria-hidden className="text-xl">
+                      {icon}
+                    </span>
+                    {t(key)}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          )}
           {mode === "register" && (
             <label className="flex flex-col gap-1.5 text-sm font-medium text-fir-soft">
               {t("username")}
