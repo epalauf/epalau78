@@ -3,7 +3,9 @@ import { redirect } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { sanitizeUserTypes } from "@/lib/userTypes";
-import ProfileForm from "@/components/profile/ProfileForm";
+import ProfileForm, {
+  type HeroSpaceOption,
+} from "@/components/profile/ProfileForm";
 
 export default async function ProfilePage({
   params,
@@ -25,11 +27,25 @@ export default async function ProfilePage({
     redirect({ href: "/login", locale });
   }
 
-  const { data } = await supabase
-    .from("profiles")
-    .select("username, user_types")
-    .eq("id", user!.id)
-    .maybeSingle();
+  const [{ data }, { data: spacesData }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("username, user_types, hero_creation_id")
+      .eq("id", user!.id)
+      .maybeSingle(),
+    supabase
+      .from("creations")
+      .select("id, title, thumbnail_url")
+      .eq("user_id", user!.id)
+      .order("updated_at", { ascending: false }),
+  ]);
+
+  const spaces = (spacesData as HeroSpaceOption[] | null) ?? [];
+  const heroSpaceId =
+    typeof data?.hero_creation_id === "string" &&
+    spaces.some((space) => space.id === data.hero_creation_id)
+      ? data.hero_creation_id
+      : null;
 
   return (
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 pt-28 pb-16">
@@ -39,6 +55,8 @@ export default async function ProfilePage({
       <ProfileForm
         initialUsername={data?.username ?? ""}
         initialTypes={sanitizeUserTypes(data?.user_types)}
+        initialHeroSpaceId={heroSpaceId}
+        spaces={spaces}
       />
     </div>
   );

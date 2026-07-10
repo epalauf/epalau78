@@ -8,9 +8,17 @@ import { useUser } from "@/lib/supabase/useUser";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { USER_TYPES, type UserType } from "@/lib/userTypes";
 
+export type HeroSpaceOption = {
+  id: string;
+  title: string;
+  thumbnail_url: string | null;
+};
+
 type ProfileFormProps = {
   initialUsername: string;
   initialTypes: UserType[];
+  initialHeroSpaceId: string | null;
+  spaces: HeroSpaceOption[];
 };
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
@@ -18,9 +26,38 @@ type SaveStatus = "idle" | "saving" | "saved" | "error";
 const inputClass =
   "seed-pill w-full border border-mist-deep bg-white/70 px-4 py-2.5 text-fir outline-none transition focus:border-moss focus:bg-white";
 
+function SpaceThumb({ space }: Readonly<{ space: HeroSpaceOption }>) {
+  if (space.thumbnail_url) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- Supabase storage URL, same as CreationThumb
+      <img
+        src={space.thumbnail_url}
+        alt=""
+        className="h-16 w-full shrink-0 object-cover"
+        loading="lazy"
+      />
+    );
+  }
+  // Stable hue from the id so each card gets its own shade of nature
+  const hue =
+    70 +
+    (Array.from(space.id).reduce((a, c) => a + c.charCodeAt(0), 0) % 120);
+  return (
+    <div
+      aria-hidden
+      className="h-16 w-full shrink-0"
+      style={{
+        background: `linear-gradient(160deg, hsl(${hue} 45% 78%), hsl(${hue + 30} 40% 55%))`,
+      }}
+    />
+  );
+}
+
 export default function ProfileForm({
   initialUsername,
   initialTypes,
+  initialHeroSpaceId,
+  spaces,
 }: Readonly<ProfileFormProps>) {
   const t = useTranslations("profile");
   const tAuth = useTranslations("auth");
@@ -29,6 +66,9 @@ export default function ProfileForm({
   const [username, setUsername] = useState(initialUsername);
   const [types, setTypes] = useState<UserType[]>(initialTypes);
   const [savedTypes, setSavedTypes] = useState<UserType[]>(initialTypes);
+  const [heroSpaceId, setHeroSpaceId] = useState<string | null>(
+    initialHeroSpaceId,
+  );
   const [status, setStatus] = useState<SaveStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const [minHint, setMinHint] = useState(false);
@@ -63,7 +103,11 @@ export default function ProfileForm({
     setError(null);
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ username: username.trim(), user_types: types })
+      .update({
+        username: username.trim(),
+        user_types: types,
+        hero_creation_id: heroSpaceId,
+      })
       .eq("id", user.id);
     if (updateError) {
       setError(
@@ -152,6 +196,59 @@ export default function ProfileForm({
           <p className="mt-1 text-xs font-normal text-fir-soft">
             {minHint ? t("minOneType") : t("typesHint")}
           </p>
+        </fieldset>
+
+        <fieldset className="flex flex-col gap-1.5 text-sm font-medium text-fir-soft">
+          <legend className="mb-1.5">{t("heroLabel")}</legend>
+          {spaces.length === 0 ? (
+            <p className="text-xs font-normal text-fir-soft">
+              {t("heroEmpty")}
+            </p>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+                <button
+                  type="button"
+                  onClick={() => setHeroSpaceId(null)}
+                  aria-pressed={heroSpaceId === null}
+                  className={`seed-pill flex h-28 flex-col items-center justify-center gap-1 border px-2 text-xs font-medium transition-colors ${
+                    heroSpaceId === null
+                      ? "border-moss bg-moss/10 text-fir"
+                      : "border-mist-deep text-fir-soft hover:bg-mist-deep"
+                  }`}
+                >
+                  <span aria-hidden className="text-xl">
+                    🌄
+                  </span>
+                  {t("heroDefault")}
+                </button>
+                {spaces.map((space) => {
+                  const selected = heroSpaceId === space.id;
+                  return (
+                    <button
+                      key={space.id}
+                      type="button"
+                      onClick={() => setHeroSpaceId(space.id)}
+                      aria-pressed={selected}
+                      className={`seed-pill flex h-28 flex-col overflow-hidden border text-xs font-medium transition-colors ${
+                        selected
+                          ? "border-moss bg-moss/10 text-fir"
+                          : "border-mist-deep text-fir-soft hover:bg-mist-deep"
+                      }`}
+                    >
+                      <SpaceThumb space={space} />
+                      <span className="flex flex-1 items-center truncate px-2">
+                        {space.title}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-1 text-xs font-normal text-fir-soft">
+                {t("heroHint")}
+              </p>
+            </>
+          )}
         </fieldset>
 
         {error && (
