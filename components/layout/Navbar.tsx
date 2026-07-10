@@ -53,6 +53,16 @@ export default function Navbar() {
           {user ? (
             <>
               <Link
+                href="/profile"
+                className={`seed-pill px-3 py-1.5 text-sm font-medium transition-colors ${
+                  pathname.startsWith("/profile")
+                    ? "bg-moss text-mist"
+                    : "text-fir-soft hover:bg-mist-deep"
+                }`}
+              >
+                {t("profile")}
+              </Link>
+              <Link
                 href="/my-spaces"
                 className={`seed-pill px-3 py-1.5 text-sm font-medium transition-colors ${
                   pathname.startsWith("/my-spaces")

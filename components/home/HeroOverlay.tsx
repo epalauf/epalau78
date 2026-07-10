@@ -14,7 +14,7 @@ const CHAPTER_META = [
 export default function HeroOverlay() {
   const t = useTranslations("home");
   const chapter = useHeroStore((s) => s.chapter);
-  const setChapter = useHeroStore((s) => s.setChapter);
+  const pinChapter = useHeroStore((s) => s.pinChapter);
 
   return (
     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
@@ -27,7 +27,7 @@ export default function HeroOverlay() {
         {CHAPTER_META.map(({ icon, key }, i) => (
           <button
             key={key}
-            onClick={() => setChapter(i)}
+            onClick={() => pinChapter(i)}
             aria-pressed={chapter === i}
             className={`seed-pill px-4 py-1.5 text-sm font-medium transition-all ${
               chapter === i

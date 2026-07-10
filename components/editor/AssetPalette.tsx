@@ -44,20 +44,30 @@ export default function AssetPalette() {
   const { user, supabase } = useUser();
   const [theme, setTheme] = useState<AssetTheme>("nature");
   const [themeTouched, setThemeTouched] = useState(false);
+  const [chosenThemes, setChosenThemes] = useState<Set<AssetTheme>>(
+    () => new Set(),
+  );
 
-  // Open the palette on the signed-in user's home theme
+  // Open the palette on the signed-in user's first chosen theme,
+  // and mark every theme matching their scenario types.
   useEffect(() => {
-    if (!user || !supabase || themeTouched) return;
+    if (!user || !supabase) return;
     let cancelled = false;
     supabase
       .from("profiles")
-      .select("user_type")
+      .select("user_types")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
         if (cancelled) return;
-        const home = USER_TYPE_THEMES[data?.user_type ?? ""];
-        if (home) setTheme(home);
+        const userTypes: string[] = Array.isArray(data?.user_types)
+          ? data.user_types
+          : [];
+        const themes = userTypes
+          .map((typ) => USER_TYPE_THEMES[typ])
+          .filter(Boolean);
+        setChosenThemes(new Set(themes));
+        if (!themeTouched && themes[0]) setTheme(themes[0]);
       });
     return () => {
       cancelled = true;
@@ -85,6 +95,12 @@ export default function AssetPalette() {
           >
             <span aria-hidden>{icon}</span>
             <span className="ml-1 hidden text-xs sm:inline">{tTheme(id)}</span>
+            {chosenThemes.has(id) && (
+              <span
+                aria-hidden
+                className="ml-0.5 inline-block size-1.5 rounded-full bg-moss align-middle"
+              />
+            )}
           </button>
         ))}
       </div>

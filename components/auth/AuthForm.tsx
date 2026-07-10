@@ -6,18 +6,11 @@ import { motion } from "framer-motion";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { USER_TYPES, type UserType } from "@/lib/userTypes";
 
 type AuthFormProps = {
   mode: "login" | "register";
 };
-
-type UserType = "nature" | "photo" | "art";
-
-const USER_TYPES: { id: UserType; icon: string; key: string }[] = [
-  { id: "nature", icon: "🌿", key: "typeNature" },
-  { id: "photo", icon: "📷", key: "typePhoto" },
-  { id: "art", icon: "🎨", key: "typeArt" },
-];
 
 export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
   const t = useTranslations("auth");
@@ -94,7 +87,7 @@ export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
             <fieldset className="flex flex-col gap-1.5 text-sm font-medium text-fir-soft">
               <legend className="mb-1.5">{t("typeQuestion")}</legend>
               <div className="grid grid-cols-3 gap-2">
-                {USER_TYPES.map(({ id, icon, key }) => (
+                {USER_TYPES.map(({ id, icon, labelKey }) => (
                   <button
                     key={id}
                     type="button"
@@ -109,7 +102,7 @@ export default function AuthForm({ mode }: Readonly<AuthFormProps>) {
                     <span aria-hidden className="text-xl">
                       {icon}
                     </span>
-                    {t(key)}
+                    {t(labelKey)}
                   </button>
                 ))}
               </div>

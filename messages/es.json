@@ -5,6 +5,7 @@
     "create": "Crear",
     "explore": "Explorar",
     "mySpaces": "Mis espacios",
+    "profile": "Perfil",
     "signIn": "Entrar",
     "signUp": "Únete",
     "signOut": "Salir"
@@ -125,6 +126,21 @@
     "emptyTitle": "Aún no hay espacios públicos",
     "emptyBody": "Sé el primero: cultiva un espacio y ábrelo a todos.",
     "emptyCta": "Empieza a crear"
+  },
+  "profile": {
+    "title": "Tu perfil",
+    "subtitle": "Elige los escenarios que sientas como tu hogar: uno, dos o los tres.",
+    "badgesTitle": "Tus escenarios",
+    "username": "Nombre de usuario",
+    "usernameTaken": "Ese nombre de usuario ya está en uso.",
+    "typesLabel": "¿Qué te trae por aquí?",
+    "typesHint": "Elige de 1 a 3 escenarios.",
+    "minOneType": "Mantén al menos un escenario.",
+    "save": "Guardar perfil",
+    "saving": "Guardando…",
+    "saved": "Guardado ✓",
+    "saveError": "No se pudo guardar tu perfil.",
+    "notConfigured": "Los perfiles aún no están disponibles. Inténtalo más tarde."
   },
   "mySpaces": {
     "title": "Mis espacios",

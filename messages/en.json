@@ -5,6 +5,7 @@
     "create": "Create",
     "explore": "Explore",
     "mySpaces": "My spaces",
+    "profile": "Profile",
     "signIn": "Sign in",
     "signUp": "Join",
     "signOut": "Sign out"
@@ -125,6 +126,21 @@
     "emptyTitle": "No public spaces yet",
     "emptyBody": "Be the first — grow a space and open it to everyone.",
     "emptyCta": "Start creating"
+  },
+  "profile": {
+    "title": "Your profile",
+    "subtitle": "Choose the scenarios that feel like home — one, two, or all three.",
+    "badgesTitle": "Your scenarios",
+    "username": "Username",
+    "usernameTaken": "That username is already taken.",
+    "typesLabel": "What brings you here?",
+    "typesHint": "Pick 1 to 3 scenarios.",
+    "minOneType": "Keep at least one scenario.",
+    "save": "Save profile",
+    "saving": "Saving…",
+    "saved": "Saved ✓",
+    "saveError": "Couldn't save your profile.",
+    "notConfigured": "Profiles aren't available yet. Please try again later."
   },
   "mySpaces": {
     "title": "My spaces",
