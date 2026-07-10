@@ -99,6 +99,7 @@
     "tiltX": "Inclinar arriba / abajo",
     "tiltZ": "Inclinar lateral",
     "color": "Color",
+    "customColor": "Color personalizado",
     "artTitle": "Título de la obra",
     "artTitlePlaceholder": "Nombra esta obra",
     "artNote": "Sobre esta obra",

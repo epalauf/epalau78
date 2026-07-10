@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { TINT_SWATCHES } from "@/lib/scene";
 import { useEditorStore } from "@/stores/editorStore";
+import ColorPicker from "./ColorPicker";
 
 export default function Inspector() {
   const t = useTranslations("editor");
@@ -123,19 +124,12 @@ export default function Inspector() {
         <span className="text-xs font-semibold uppercase tracking-wide text-fir-soft">
           {t("color")}
         </span>
-        <div className="flex flex-wrap gap-1.5">
-          {TINT_SWATCHES.map((tint) => (
-            <button
-              key={tint}
-              onClick={() => updateObject(selectedId, { tint })}
-              aria-label={tint}
-              className={`size-6 rounded-full border-2 transition-transform hover:scale-110 ${
-                object.tint === tint ? "border-fir" : "border-white/60"
-              }`}
-              style={{ backgroundColor: tint }}
-            />
-          ))}
-        </div>
+        <ColorPicker
+          swatches={TINT_SWATCHES}
+          value={object.tint}
+          onChange={(tint) => updateObject(selectedId, { tint })}
+          customLabel={t("customColor")}
+        />
       </div>
 
       <button

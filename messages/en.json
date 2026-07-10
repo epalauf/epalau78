@@ -99,6 +99,7 @@
     "tiltX": "Tilt up / down",
     "tiltZ": "Tilt sideways",
     "color": "Color",
+    "customColor": "Custom color",
     "artTitle": "Artwork title",
     "artTitlePlaceholder": "Name this piece",
     "artNote": "About this piece",

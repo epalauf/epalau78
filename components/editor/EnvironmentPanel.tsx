@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useEditorStore } from "@/stores/editorStore";
+import ColorPicker from "./ColorPicker";
 
 const GROUND_SWATCHES = [
   "#7cb56b",
@@ -12,6 +13,8 @@ const GROUND_SWATCHES = [
   "#c9b458",
   "#d4c39a",
   "#e8e4da",
+  "#4a4a52",
+  "#1c1c20",
 ] as const;
 
 const EFFECTS = ["butterflies", "clouds", "fireflies"] as const;
@@ -23,6 +26,7 @@ const EFFECT_ICONS: Record<(typeof EFFECTS)[number], string> = {
 
 export default function EnvironmentPanel() {
   const t = useTranslations("editor.environment");
+  const tEditor = useTranslations("editor");
   const [open, setOpen] = useState(true);
   const environment = useEditorStore((s) => s.environment);
   const setEnvironment = useEditorStore((s) => s.setEnvironment);
@@ -106,19 +110,12 @@ export default function EnvironmentPanel() {
             <span className="text-xs font-semibold uppercase tracking-wide text-fir-soft">
               {t("ground")}
             </span>
-            <div className="flex flex-wrap gap-1.5">
-              {GROUND_SWATCHES.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setGroundColor(color)}
-                  aria-label={color}
-                  className={`size-6 rounded-full border-2 transition-transform hover:scale-110 ${
-                    groundColor === color ? "border-fir" : "border-white/60"
-                  }`}
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
+            <ColorPicker
+              swatches={GROUND_SWATCHES}
+              value={groundColor}
+              onChange={setGroundColor}
+              customLabel={tEditor("customColor")}
+            />
           </div>
         </div>
       )}
