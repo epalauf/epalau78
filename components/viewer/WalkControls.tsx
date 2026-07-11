@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { PointerLockControls } from "@react-three/drei";
 import { Vector3 } from "three";
+import type { PointerLockControls as PointerLockControlsImpl } from "three-stdlib";
 import type { SceneObject } from "@/lib/scene";
 import { artworkCenter, buildObstacles, resolveCollisions } from "./walk";
 
@@ -48,6 +49,7 @@ export default function WalkControls({
   onLockChange,
 }: Readonly<WalkControlsProps>) {
   const gl = useThree((s) => s.gl);
+  const controlsRef = useRef<PointerLockControlsImpl | null>(null);
   const pressed = useRef(new Set<string>());
   const locked = useRef(false);
   const nearId = useRef<string | null>(null);
@@ -67,7 +69,10 @@ export default function WalkControls({
       ) {
         return;
       }
-      const request = el.requestPointerLock() as unknown;
+      // Request the lock on the element the controls watch — locking a
+      // different element leaves the controls thinking they're unlocked.
+      const target = controlsRef.current?.domElement ?? el;
+      const request = target.requestPointerLock() as unknown;
       (request as Promise<void> | undefined)?.catch?.(() => {
         lastUnlockAt = performance.now();
       });
@@ -169,6 +174,7 @@ export default function WalkControls({
 
   return (
     <PointerLockControls
+      ref={controlsRef}
       // Dead selector: disables drei's own document-wide click-to-lock;
       // the canvas listener above is the only lock trigger.
       selector="#natura-walk-lock-off"
