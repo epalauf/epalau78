@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { PointerLockControls } from "@react-three/drei";
 import { Vector3 } from "three";
 import type { SceneObject } from "@/lib/scene";
@@ -11,6 +11,12 @@ const EYE_HEIGHT = 1.6;
 const WALK_SPEED = 4.2;
 const WALKER_RADIUS = 0.4;
 const REACH = 3.4;
+
+// Browsers refuse to re-acquire pointer lock for ~1.25s after an unlock;
+// asking earlier throws a SecurityError. Track the last unlock across
+// mounts (module scope: the component remounts around artwork focus).
+const LOCK_COOLDOWN_MS = 1600;
+let lastUnlockAt = 0;
 
 const MOVE_KEYS: Record<string, [number, number]> = {
   KeyW: [0, 1],
@@ -41,12 +47,45 @@ export default function WalkControls({
   onInteract,
   onLockChange,
 }: Readonly<WalkControlsProps>) {
+  const gl = useThree((s) => s.gl);
   const pressed = useRef(new Set<string>());
   const locked = useRef(false);
   const nearId = useRef<string | null>(null);
   const forward = useRef(new Vector3());
 
   const obstacles = useMemo(() => buildObstacles(objects), [objects]);
+
+  // Lock only on canvas clicks (drei's default listens on the whole
+  // document, so UI buttons would grab the mouse too), and never inside
+  // the browser's post-unlock cooldown window.
+  useEffect(() => {
+    const el = gl.domElement;
+    function tryLock() {
+      if (
+        document.pointerLockElement ||
+        performance.now() - lastUnlockAt < LOCK_COOLDOWN_MS
+      ) {
+        return;
+      }
+      const request = el.requestPointerLock() as unknown;
+      (request as Promise<void> | undefined)?.catch?.(() => {
+        lastUnlockAt = performance.now();
+      });
+    }
+    el.addEventListener("click", tryLock);
+    return () => el.removeEventListener("click", tryLock);
+  }, [gl]);
+
+  // If we unmount while still locked (focusing an artwork exits the lock
+  // and swaps controls), report the unlock and start the cooldown clock.
+  useEffect(() => {
+    return () => {
+      if (locked.current) {
+        lastUnlockAt = performance.now();
+        onLockChange(false);
+      }
+    };
+  }, [onLockChange]);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -130,12 +169,16 @@ export default function WalkControls({
 
   return (
     <PointerLockControls
+      // Dead selector: disables drei's own document-wide click-to-lock;
+      // the canvas listener above is the only lock trigger.
+      selector="#natura-walk-lock-off"
       onLock={() => {
         locked.current = true;
         onLockChange(true);
       }}
       onUnlock={() => {
         locked.current = false;
+        lastUnlockAt = performance.now();
         onLockChange(false);
         pressed.current.clear();
       }}
