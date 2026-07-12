@@ -17,11 +17,9 @@ async function uploadThumbnail(
   const blob = await captureCanvasThumbnail();
   if (!blob) return null;
   const path = `${userId}/${creationId}.jpg`;
-  // Storage upsert trips RLS on this setup; replace by delete-then-upload
-  await supabase.storage.from("thumbnails").remove([path]);
   const { error } = await supabase.storage
     .from("thumbnails")
-    .upload(path, blob, { contentType: "image/jpeg" });
+    .upload(path, blob, { contentType: "image/jpeg", upsert: true });
   if (error) return null;
   const { data } = supabase.storage.from("thumbnails").getPublicUrl(path);
   // Cache-bust so updated thumbnails show immediately
@@ -107,7 +105,7 @@ export default function SaveControls() {
         maxLength={60}
         onChange={(e) => setTitle(e.target.value)}
         placeholder={t("titlePlaceholder")}
-        className="seed-pill w-36 border border-mist-deep bg-white/70 px-3 py-1.5 text-sm text-fir outline-none transition focus:border-moss sm:w-52"
+        className="seed-pill w-28 border border-mist-deep bg-white/70 px-3 py-1.5 text-sm text-fir outline-none transition focus:border-moss sm:w-52"
       />
       <button
         onClick={handleSave}
