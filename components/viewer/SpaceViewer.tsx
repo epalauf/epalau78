@@ -9,6 +9,7 @@ import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import type { SceneData, SceneObject } from "@/lib/scene";
 import { GROUND_RADIUS } from "@/lib/scene";
 import LivingEnvironment from "@/components/three/LivingEnvironment";
+import { useIsTouch } from "@/lib/useIsTouch";
 import AssetInstances, {
   ARTWORK_ASSETS,
 } from "@/components/three/AssetInstances";
@@ -59,6 +60,9 @@ export default function SpaceViewer({
   const [nearId, setNearId] = useState<string | null>(null);
   const [walkLocked, setWalkLocked] = useState(false);
   const orbitRef = useRef<OrbitControlsImpl | null>(null);
+  // Walk mode needs pointer lock + keyboard — not available on touch devices
+  const isTouch = useIsTouch();
+  const activeMode: ViewMode = isTouch ? "orbit" : mode;
 
   const focusables = useMemo(
     () => scene.objects.filter((o) => ARTWORK_ASSETS.has(o.asset)),
@@ -94,7 +98,7 @@ export default function SpaceViewer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusId]);
 
-  const walking = mode === "walk" && !focused;
+  const walking = activeMode === "walk" && !focused;
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -114,10 +118,12 @@ export default function SpaceViewer({
         <AssetInstances
           objects={scene.objects}
           windStrength={scene.environment.windStrength}
-          onArtClick={mode === "orbit" && !focused ? focusArtwork : undefined}
+          onArtClick={
+            activeMode === "orbit" && !focused ? focusArtwork : undefined
+          }
         />
 
-        {mode === "orbit" && (
+        {activeMode === "orbit" && (
           <OrbitControls
             ref={orbitRef}
             makeDefault
@@ -126,8 +132,8 @@ export default function SpaceViewer({
             autoRotateSpeed={0.5}
             target={[0, 0.5, 0]}
             maxPolarAngle={Math.PI / 2 - 0.08}
-            minDistance={2}
-            maxDistance={45}
+            minDistance={1.5}
+            maxDistance={70}
           />
         )}
 
@@ -145,17 +151,17 @@ export default function SpaceViewer({
       </Canvas>
 
       {/* Mode toggle */}
-      {!focused && (
+      {!focused && !isTouch && (
         <div className="absolute right-4 bottom-6 flex flex-col items-end gap-2">
           <button
             onClick={() => {
               if (document.pointerLockElement) document.exitPointerLock();
               setNearId(null);
-              setMode(mode === "orbit" ? "walk" : "orbit");
+              setMode(activeMode === "orbit" ? "walk" : "orbit");
             }}
             className="seed-pill glass-leaf px-4 py-2 text-sm font-semibold text-fir transition-transform hover:scale-105"
           >
-            {mode === "orbit" ? <>🚶 {t("walk")}</> : <>🌀 {t("orbit")}</>}
+            {activeMode === "orbit" ? <>🚶 {t("walk")}</> : <>🌀 {t("orbit")}</>}
           </button>
         </div>
       )}

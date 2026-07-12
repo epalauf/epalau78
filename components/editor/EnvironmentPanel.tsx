@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useEditorStore } from "@/stores/editorStore";
+import { useMediaQuery } from "@/lib/useIsTouch";
 import ColorPicker from "./ColorPicker";
 
 const GROUND_SWATCHES = [
@@ -27,7 +28,10 @@ const EFFECT_ICONS: Record<(typeof EFFECTS)[number], string> = {
 export default function EnvironmentPanel() {
   const t = useTranslations("editor.environment");
   const tEditor = useTranslations("editor");
-  const [open, setOpen] = useState(true);
+  // Collapsed by default on small screens, where the panel would cover the scene
+  const isSmall = useMediaQuery("(max-width: 639px)");
+  const [userOpen, setUserOpen] = useState<boolean | null>(null);
+  const open = userOpen ?? !isSmall;
   const environment = useEditorStore((s) => s.environment);
   const setEnvironment = useEditorStore((s) => s.setEnvironment);
   const setEffect = useEditorStore((s) => s.setEffect);
@@ -37,7 +41,7 @@ export default function EnvironmentPanel() {
   return (
     <div className="glass-leaf pointer-events-auto w-56 px-5 py-4">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => setUserOpen(!open)}
         className="flex w-full items-center justify-between font-display text-base font-bold text-fir"
         aria-expanded={open}
       >

@@ -46,6 +46,8 @@ export default function MyImagesPanel() {
   }, [user, supabase, t]);
 
   useEffect(() => {
+    // refresh only sets state after awaiting the network fetch, not synchronously
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) refresh();
   }, [open, refresh]);
 

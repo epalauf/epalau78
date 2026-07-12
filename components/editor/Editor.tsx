@@ -53,17 +53,17 @@ export default function Editor() {
 
       {/* UI overlay */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
-        <div className="flex items-start justify-between px-4 pt-20">
+        <div className="flex flex-wrap items-start justify-between gap-2 px-4 pt-20">
           <div className="flex flex-col items-start gap-2">
             <EnvironmentPanel />
             <MyImagesPanel />
           </div>
           <SaveControls />
         </div>
-        <div className="flex flex-1 items-end justify-start gap-3 px-4 pb-4 sm:items-center">
+        <div className="flex flex-1 items-end justify-start gap-3 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:items-center">
           <AssetPalette />
         </div>
-        <div className="absolute bottom-4 right-4 top-20 flex items-end sm:items-center">
+        <div className="absolute inset-x-0 bottom-0 flex justify-center sm:inset-x-auto sm:bottom-4 sm:right-4 sm:top-20 sm:items-center sm:justify-end">
           <Inspector />
         </div>
       </div>
