@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { TINT_SWATCHES } from "@/lib/scene";
+import { DETAIL_ASSETS, FLOATING_ASSETS, TINT_SWATCHES } from "@/lib/scene";
 import { useEditorStore } from "@/stores/editorStore";
 import ColorPicker from "./ColorPicker";
 
@@ -17,7 +17,7 @@ export default function Inspector() {
   if (!selectedId || !object) return null;
 
   return (
-    <div className="glass-leaf glass-leaf-flip pointer-events-auto flex max-h-full w-60 flex-col gap-4 overflow-y-auto px-5 py-5">
+    <div className="glass-leaf glass-leaf-flip pointer-events-auto flex max-h-full w-60 flex-col gap-4 overflow-y-auto px-5 py-5 max-sm:max-h-[45vh] max-sm:w-full max-sm:rounded-b-none">
       <h3 className="font-display text-lg font-bold text-fir">
         {t(`assets.${object.asset}`)}
       </h3>
@@ -36,6 +36,46 @@ export default function Inspector() {
           className="accent-moss"
         />
       </label>
+
+      {DETAIL_ASSETS.has(object.asset) && (
+        <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+          {t("detail")}
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.05}
+            value={object.detail ?? 0.35}
+            onChange={(e) =>
+              updateObject(selectedId, { detail: Number(e.target.value) })
+            }
+            className="accent-moss"
+          />
+        </label>
+      )}
+
+      {FLOATING_ASSETS.has(object.asset) && (
+        <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-fir-soft">
+          {t("height")}
+          <input
+            type="range"
+            min={0.5}
+            max={14}
+            step={0.1}
+            value={object.position[1]}
+            onChange={(e) =>
+              updateObject(selectedId, {
+                position: [
+                  object.position[0],
+                  Number(e.target.value),
+                  object.position[2],
+                ],
+              })
+            }
+            className="accent-moss"
+          />
+        </label>
+      )}
 
       {object.mounted && (
         <div className="flex flex-col gap-1.5 text-xs text-fir-soft">

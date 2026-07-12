@@ -8,6 +8,9 @@ import Rock from "./Rock";
 import Flower from "./Flower";
 import Mushroom from "./Mushroom";
 import Pond from "./Pond";
+import CloudPuff from "./CloudPuff";
+import FloatingIsland from "./FloatingIsland";
+import Birds from "./Birds";
 import Building from "@/components/three/props/Building";
 import StreetLamp from "@/components/three/props/StreetLamp";
 import Bench from "@/components/three/props/Bench";
@@ -36,6 +39,8 @@ type AssetMeshProps = {
   /** Picture offsets for the frame asset (local units) */
   offsetX?: number;
   offsetY?: number;
+  /** Geometry richness 0 rough → 1 smooth, for nature assets */
+  detail?: number;
 };
 
 /** Renders the procedural mesh for a catalog asset, at the local origin. */
@@ -53,6 +58,7 @@ export default function AssetMesh({
   mounted = false,
   offsetX = 0,
   offsetY = 0,
+  detail,
 }: AssetMeshProps) {
   switch (asset) {
     case "pine":
@@ -63,6 +69,7 @@ export default function AssetMesh({
             tint={tint}
             windPhase={windPhase}
             windStrength={windStrength}
+            detail={detail}
           />
         </group>
       );
@@ -74,6 +81,7 @@ export default function AssetMesh({
             tint={tint}
             windPhase={windPhase}
             windStrength={windStrength}
+            detail={detail}
           />
         </group>
       );
@@ -85,6 +93,7 @@ export default function AssetMesh({
             tint={tint}
             windPhase={windPhase}
             windStrength={windStrength}
+            detail={detail}
           />
         </group>
       );
@@ -95,6 +104,7 @@ export default function AssetMesh({
           tint={tint}
           rotationY={rotationY}
           position={[0, scale * 0.25, 0]}
+          detail={detail}
         />
       );
     case "flower":
@@ -105,11 +115,19 @@ export default function AssetMesh({
             tint={tint}
             windPhase={windPhase}
             windStrength={windStrength}
+            detail={detail}
           />
         </group>
       );
     case "mushroom":
-      return <Mushroom scale={scale * 1.6} tint={tint} rotationY={rotationY} />;
+      return (
+        <Mushroom
+          scale={scale * 1.6}
+          tint={tint}
+          rotationY={rotationY}
+          detail={detail}
+        />
+      );
     case "pond":
       return <Pond scale={scale} tint={tint} rotationY={rotationY} />;
     case "building":
@@ -159,5 +177,21 @@ export default function AssetMesh({
           seed={seed}
         />
       );
+    case "cloud":
+      return (
+        <CloudPuff scale={scale} tint={tint} seed={seed} phase={windPhase} />
+      );
+    case "island":
+      return (
+        <FloatingIsland
+          scale={scale}
+          tint={tint}
+          rotationY={rotationY}
+          seed={seed}
+          phase={windPhase}
+        />
+      );
+    case "birds":
+      return <Birds scale={scale} tint={tint} seed={seed} phase={windPhase} />;
   }
 }

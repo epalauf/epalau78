@@ -8,7 +8,8 @@
     "profile": "Profile",
     "signIn": "Sign in",
     "signUp": "Join",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "menu": "Menu"
   },
   "home": {
     "heroTitle": "One living world. Three ways in.",
@@ -74,12 +75,16 @@
       "pedestal": "Sculpture",
       "easel": "Easel",
       "wall": "Wall",
-      "doorway": "Doorway"
+      "doorway": "Doorway",
+      "cloud": "Cloud",
+      "island": "Floating island",
+      "birds": "Birds"
     },
     "themes": {
       "nature": "Nature",
       "urban": "Urban",
-      "art": "Art"
+      "art": "Art",
+      "sky": "Sky"
     },
     "images": {
       "title": "My images",
@@ -95,6 +100,8 @@
     },
     "plantHint": "Click the ground to plant it. Esc to stop.",
     "size": "Size",
+    "detail": "Detail",
+    "height": "Height",
     "rotation": "Rotation",
     "tiltX": "Tilt up / down",
     "tiltZ": "Tilt sideways",

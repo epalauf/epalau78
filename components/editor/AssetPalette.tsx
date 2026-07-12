@@ -29,12 +29,16 @@ const ASSET_ICONS: Record<AssetId, string> = {
   easel: "🎨",
   wall: "🧱",
   doorway: "🚪",
+  cloud: "☁️",
+  island: "🏝️",
+  birds: "🐦",
 };
 
 const THEMES: { id: AssetTheme; icon: string }[] = [
   { id: "nature", icon: "🌿" },
   { id: "urban", icon: "📷" },
   { id: "art", icon: "🎨" },
+  { id: "sky", icon: "☁️" },
 ];
 
 export default function AssetPalette() {

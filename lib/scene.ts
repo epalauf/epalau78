@@ -15,11 +15,14 @@ export const ASSET_IDS = [
   "easel",
   "wall",
   "doorway",
+  "cloud",
+  "island",
+  "birds",
 ] as const;
 
 export type AssetId = (typeof ASSET_IDS)[number];
 
-export type AssetTheme = "nature" | "urban" | "art";
+export type AssetTheme = "nature" | "urban" | "art" | "sky";
 
 /** Palette grouping; an asset may appear in several themes. */
 export const ASSET_THEMES: Record<AssetTheme, readonly AssetId[]> = {
@@ -35,6 +38,31 @@ export const ASSET_THEMES: Record<AssetTheme, readonly AssetId[]> = {
     "doorway",
   ],
   art: ["wall", "doorway", "frame", "pedestal", "easel", "bench", "flower"],
+  sky: ["cloud", "island", "birds"],
+};
+
+/** Assets whose geometry richness can be tuned with the detail slider. */
+export const DETAIL_ASSETS: ReadonlySet<AssetId> = new Set([
+  "pine",
+  "broadleaf",
+  "bush",
+  "rock",
+  "flower",
+  "mushroom",
+]);
+
+/** Assets that hover above the ground instead of sitting on it. */
+export const FLOATING_ASSETS: ReadonlySet<AssetId> = new Set([
+  "cloud",
+  "island",
+  "birds",
+]);
+
+/** Spawn altitude for floating assets. */
+export const FLOAT_DEFAULT_Y: Partial<Record<AssetId, number>> = {
+  cloud: 7,
+  island: 3.5,
+  birds: 4.5,
 };
 
 /** Maps a profile user_type to its home palette theme. */
@@ -55,6 +83,8 @@ export type SceneObject = {
   rotationZ?: number;
   scale: number;
   tint: string;
+  /** Geometry richness 0 rough → 1 smooth; unset keeps the classic look */
+  detail?: number;
   /** Storage path of a user image shown by picture assets (frame, easel) */
   image?: string;
   /** Artwork title shown when a visitor focuses the piece */
@@ -121,6 +151,9 @@ export const ASSET_DEFAULTS: Record<AssetId, { tint: string; scale: number }> =
     easel: { tint: "#8a6f4d", scale: 1 },
     wall: { tint: "#ece7db", scale: 1 },
     doorway: { tint: "#ece7db", scale: 1 },
+    cloud: { tint: "#ffffff", scale: 1 },
+    island: { tint: "#7cb56b", scale: 1 },
+    birds: { tint: "#3a4252", scale: 1 },
   };
 
 export const TINT_SWATCHES = [
@@ -248,6 +281,15 @@ export function parseSceneData(raw: unknown): SceneData | null {
       )
       .map((o) => ({
         ...o,
+        position: [
+          o.position[0],
+          Math.max(0, Math.min(20, o.position[1] ?? 0)),
+          o.position[2],
+        ] as [number, number, number],
+        detail:
+          typeof o.detail === "number"
+            ? Math.max(0, Math.min(1, o.detail))
+            : undefined,
         image: typeof o.image === "string" ? o.image : undefined,
         rotationX: typeof o.rotationX === "number" ? o.rotationX : undefined,
         rotationZ: typeof o.rotationZ === "number" ? o.rotationZ : undefined,

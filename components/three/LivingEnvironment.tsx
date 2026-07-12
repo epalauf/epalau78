@@ -46,14 +46,14 @@ export default function LivingEnvironment({
 
   return (
     <>
-      <fog attach="fog" args={[computed.fogColor, 45, 130]} />
+      <fog attach="fog" args={[computed.fogColor, 60, 190]} />
       <Sky
         sunPosition={computed.sun}
         turbidity={6}
         rayleigh={computed.daylight > 0.05 ? 1.6 : 4}
       />
       {computed.isNight && (
-        <Stars radius={90} depth={40} count={1500} factor={3} fade speed={0.6} />
+        <Stars radius={110} depth={40} count={1500} factor={3} fade speed={0.6} />
       )}
 
       <ambientLight

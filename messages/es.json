@@ -8,7 +8,8 @@
     "profile": "Perfil",
     "signIn": "Entrar",
     "signUp": "Únete",
-    "signOut": "Salir"
+    "signOut": "Salir",
+    "menu": "Menú"
   },
   "home": {
     "heroTitle": "Un mundo vivo. Tres caminos para entrar.",
@@ -74,12 +75,16 @@
       "pedestal": "Escultura",
       "easel": "Caballete",
       "wall": "Pared",
-      "doorway": "Puerta"
+      "doorway": "Puerta",
+      "cloud": "Nube",
+      "island": "Isla flotante",
+      "birds": "Pájaros"
     },
     "themes": {
       "nature": "Naturaleza",
       "urban": "Urbano",
-      "art": "Arte"
+      "art": "Arte",
+      "sky": "Cielo"
     },
     "images": {
       "title": "Mis imágenes",
@@ -95,6 +100,8 @@
     },
     "plantHint": "Haz clic en el suelo para plantarlo. Esc para parar.",
     "size": "Tamaño",
+    "detail": "Detalle",
+    "height": "Altura",
     "rotation": "Rotación",
     "tiltX": "Inclinar arriba / abajo",
     "tiltZ": "Inclinar lateral",

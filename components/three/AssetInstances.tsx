@@ -63,6 +63,7 @@ export default function AssetInstances({
               mounted={o.mounted}
               offsetX={o.offsetX}
               offsetY={o.offsetY}
+              detail={o.detail}
             />
           </group>
         );

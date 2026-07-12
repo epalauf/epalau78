@@ -10,6 +10,8 @@ type FlowerProps = {
   tint?: string;
   windPhase?: number;
   windStrength?: number;
+  /** Geometry richness 0 rough → 1 smooth; 0.35 matches the classic look */
+  detail?: number;
 };
 
 const STEM = "#4c8552";
@@ -21,8 +23,15 @@ export default function Flower({
   tint = "#f2f0e4",
   windPhase = 0,
   windStrength = 1,
+  detail = 0.35,
 }: FlowerProps) {
   const head = useRef<Group>(null);
+  const seg = (lo: number, hi: number) => Math.round(lo + detail * (hi - lo));
+  const sphereW = seg(4, 10);
+  const sphereH = seg(4, 8);
+  const stemSeg = seg(4, 8);
+  const petals = detail >= 0.7 ? 8 : 5;
+  const flat = detail < 0.65;
 
   useFrame(({ clock }) => {
     if (!head.current) return;
@@ -33,24 +42,24 @@ export default function Flower({
   return (
     <group position={position} scale={scale}>
       <mesh position={[0, 0.18, 0]}>
-        <cylinderGeometry args={[0.015, 0.02, 0.36, 5]} />
-        <meshStandardMaterial color={STEM} flatShading />
+        <cylinderGeometry args={[0.015, 0.02, 0.36, stemSeg]} />
+        <meshStandardMaterial key={String(flat)} color={STEM} flatShading={flat} />
       </mesh>
       <group ref={head} position={[0, 0.38, 0]}>
         <mesh>
-          <sphereGeometry args={[0.05, 6, 5]} />
-          <meshStandardMaterial color={HEART} flatShading />
+          <sphereGeometry args={[0.05, sphereW, sphereH]} />
+          <meshStandardMaterial key={String(flat)} color={HEART} flatShading={flat} />
         </mesh>
-        {[0, 1, 2, 3, 4].map((i) => {
-          const a = (i / 5) * Math.PI * 2;
+        {Array.from({ length: petals }, (_, i) => {
+          const a = (i / petals) * Math.PI * 2;
           return (
             <mesh
               key={i}
               position={[Math.cos(a) * 0.075, 0, Math.sin(a) * 0.075]}
               scale={[1, 0.4, 1]}
             >
-              <sphereGeometry args={[0.055, 6, 5]} />
-              <meshStandardMaterial color={tint} flatShading />
+              <sphereGeometry args={[0.055, sphereW, sphereH]} />
+              <meshStandardMaterial key={String(flat)} color={tint} flatShading={flat} />
             </mesh>
           );
         })}

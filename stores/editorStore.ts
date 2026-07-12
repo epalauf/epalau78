@@ -3,6 +3,8 @@ import {
   ASSET_DEFAULTS,
   DEFAULT_ENVIRONMENT,
   DEFAULT_GROUND_COLOR,
+  FLOATING_ASSETS,
+  FLOAT_DEFAULT_Y,
   createSceneData,
   snapFrameToWall,
   type AssetId,
@@ -83,7 +85,11 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     const object: SceneObject = {
       id: crypto.randomUUID(),
       asset,
-      position: snap ? snap.position : position,
+      position: snap
+        ? snap.position
+        : FLOATING_ASSETS.has(asset)
+          ? [position[0], FLOAT_DEFAULT_Y[asset] ?? 5, position[2]]
+          : position,
       // Pictures and walls should face where you're looking, not spin randomly
       rotationY: snap
         ? snap.rotationY

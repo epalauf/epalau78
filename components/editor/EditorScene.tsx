@@ -62,6 +62,7 @@ function EditorObject({
           mounted={object.mounted}
           offsetX={object.offsetX}
           offsetY={object.offsetY}
+          detail={object.detail}
         />
       </group>
       {isSelected && (
@@ -112,8 +113,10 @@ function Ground() {
           mounted: true,
         });
       } else {
+        // Keep the object's altitude — floating assets are dragged in x/z only
+        const [x, , z] = clampToGround(e.point.x, e.point.z);
         updateObject(selectedId, {
-          position: clampToGround(e.point.x, e.point.z),
+          position: [x, dragged?.position[1] ?? 0, z],
           mounted: undefined,
         });
       }
@@ -152,6 +155,31 @@ function PlacementGhost({
   );
 }
 
+/**
+ * Re-enables camera controls when any drag ends. Mirrors the synchronous
+ * disable in EditorObject.handlePointerDown — relying on the React `enabled`
+ * prop alone can miss the re-enable when the down/up state updates land in
+ * the same render batch.
+ */
+function DragReleaseGuard() {
+  const getThree = useThree((s) => s.get);
+  const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
+
+  useEffect(() => {
+    function onPointerUp() {
+      const controls = getThree().controls as unknown as {
+        enabled: boolean;
+      } | null;
+      if (controls) controls.enabled = true;
+      setDraggingObject(false);
+    }
+    window.addEventListener("pointerup", onPointerUp);
+    return () => window.removeEventListener("pointerup", onPointerUp);
+  }, [getThree, setDraggingObject]);
+
+  return null;
+}
+
 function SceneObjects() {
   const objects = useEditorStore((s) => s.objects);
   const windStrength = useEditorStore((s) => s.environment.windStrength);
@@ -176,7 +204,6 @@ function SceneObjects() {
 
 export default function EditorScene() {
   const isDraggingObject = useEditorStore((s) => s.isDraggingObject);
-  const setDraggingObject = useEditorStore((s) => s.setDraggingObject);
   const selectObject = useEditorStore((s) => s.selectObject);
   const setPlacingAsset = useEditorStore((s) => s.setPlacingAsset);
   const removeObject = useEditorStore((s) => s.removeObject);
@@ -194,16 +221,11 @@ export default function EditorScene() {
         if (selectedId) removeObject(selectedId);
       }
     }
-    function onPointerUp() {
-      setDraggingObject(false);
-    }
     window.addEventListener("keydown", onKeyDown);
-    window.addEventListener("pointerup", onPointerUp);
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      window.removeEventListener("pointerup", onPointerUp);
     };
-  }, [selectObject, setPlacingAsset, removeObject, setDraggingObject]);
+  }, [selectObject, setPlacingAsset, removeObject]);
 
   return (
     <Canvas
@@ -216,6 +238,7 @@ export default function EditorScene() {
     >
       <LivingEnvironment environment={environment} />
 
+      <DragReleaseGuard />
       <Ground />
       <SceneObjects />
 
@@ -224,8 +247,8 @@ export default function EditorScene() {
         enabled={!isDraggingObject}
         target={[0, 0.5, 0]}
         maxPolarAngle={Math.PI / 2 - 0.08}
-        minDistance={4}
-        maxDistance={45}
+        minDistance={2.5}
+        maxDistance={70}
       />
     </Canvas>
   );
